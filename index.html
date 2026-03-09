@@ -642,10 +642,8 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 </div>
 
 <script>
-// ─── Version & Cache Bust ───
-const APP_VERSION='20260309c';
-(function(){const v=localStorage.getItem('lucien-version');if(v&&v!==APP_VERSION){localStorage.setItem('lucien-version',APP_VERSION);location.reload();}else{localStorage.setItem('lucien-version',APP_VERSION);}})();
-if('serviceWorker'in navigator){navigator.serviceWorker.register('/sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const w=reg.installing;if(w)w.addEventListener('statechange',()=>{if(w.state==='activated')location.reload();});});});}
+// ─── Service Worker ───
+if('serviceWorker'in navigator){navigator.serviceWorker.register('/sw.js');}
 
 // ─── State ───
 let isDark=false;
