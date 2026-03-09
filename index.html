@@ -11,6 +11,9 @@
 <title>Lucien</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
 <style>
 :root{--blue:#007aff;--green:#34c759;--orange:#ff9500;--red:#ff3b30;--purple:#af52de;--pink:#ff2d55;--teal:#32ade6;--indigo:#5856d6;--bg:#f2f2f7;--card:#fff;--t1:#1c1c1e;--t2:#636366;--t3:#8e8e93;--t4:#aeaeb2;--t5:#c7c7cc;--t6:#d1d1d6;--sep:rgba(60,60,67,.04);--nav-bg:rgba(255,255,255,.94);--nav-border:rgba(0,0,0,.08);--search-bg:rgba(118,118,128,.08);--chat-bg:#f9f9fb;--chat-input-bg:#f2f2f7;--hdr-bg:rgba(242,242,247,.85);--overlay-bg:rgba(0,0,0,.4)}
 .dark{--bg:#000;--card:#1c1c1e;--t1:#f5f5f7;--t2:#aeaeb2;--t3:#8e8e93;--t4:#636366;--t5:#48484a;--t6:#3a3a3c;--sep:rgba(255,255,255,.06);--nav-bg:rgba(28,28,30,.94);--nav-border:rgba(255,255,255,.08);--search-bg:rgba(118,118,128,.2);--chat-bg:#000;--chat-input-bg:#1c1c1e;--hdr-bg:rgba(0,0,0,.85);--overlay-bg:rgba(0,0,0,.7)}
@@ -391,9 +394,20 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 .tt-btn{padding:10px 16px;border-radius:10px;background:var(--card);border:1px solid var(--sep);font-size:13px;font-weight:600;color:var(--t1);cursor:pointer;font-family:inherit;transition:.1s}
 .tt-btn:active{background:rgba(0,122,255,.06);border-color:var(--blue);color:var(--blue)}
 
+/* Login Screen */
+.login-scr{position:absolute;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(165deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border-radius:inherit;transition:opacity .5s,visibility .5s}
+.login-scr.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.login-logo{font-size:56px;font-weight:800;letter-spacing:-2px;color:#fff}
+.login-sub{font-size:15px;color:rgba(255,255,255,.45);margin:4px 0 40px;font-weight:500}
+.login-g-btn{display:flex;align-items:center;gap:12px;padding:15px 28px;background:#fff;color:#1c1c1e;border-radius:14px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px rgba(0,0,0,.25);transition:transform .1s}
+.login-g-btn:active{transform:scale(.96)}
+.login-g-btn svg{width:20px;height:20px;flex-shrink:0}
+.login-info{margin-top:24px;font-size:12px;color:rgba(255,255,255,.3);text-align:center;max-width:250px;line-height:1.5}
+
 @media(max-width:500px){
   .tool-panel{top:env(safe-area-inset-top,47px);bottom:calc(56px + env(safe-area-inset-bottom,34px))}
   .msg-actions{opacity:1}
+  .login-scr{border-radius:0}
 }
 </style>
 </head>
@@ -414,6 +428,14 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
     </div>
   </div>
 </div>
+<!-- LOGIN SCREEN -->
+<div class="login-scr" id="login-screen">
+  <div class="login-logo">Lucien</div>
+  <div class="login-sub">Dein KI-Assistent</div>
+  <button class="login-g-btn" onclick="googleSignIn()"><svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Mit Google anmelden</button>
+  <div class="login-info">Deine Daten werden sicher in der Cloud gespeichert</div>
+</div>
+
 <!-- SYNC TOAST -->
 <div class="sync-toast" id="sync-toast"><div class="sync-spinner" id="sync-spin"></div><span id="sync-text">Synchronisiere...</span></div>
 <div class="island"></div>
@@ -505,6 +527,10 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 <div class="scr off" id="s4">
   <div class="pg-hdr"><div class="pg-t">Einstellungen</div></div>
   <div style="height:12px"></div>
+  <div class="sg" id="account-section" style="display:none"><div class="sg-t">Konto</div><div class="sc">
+    <div class="sr"><div class="sr-ic" style="background:var(--blue);overflow:hidden" id="acc-avatar-wrap"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)" id="acc-name">—</div><div style="font-size:12px;color:var(--t3);margin-top:1px" id="acc-email">—</div></div><span style="font-size:12px;color:var(--green);font-weight:600">Cloud Sync</span></div>
+    <div class="sr" style="cursor:pointer" onclick="logOut()"><div class="sr-ic" style="background:var(--red)"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4m7 14l5-5-5-5m5 5H9"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--red)">Abmelden</div></div><span style="color:var(--t5)">›</span></div>
+  </div></div>
   <div class="sg"><div class="sg-t">Darstellung</div><div class="sc">
     <div class="sr"><div class="sr-ic" style="background:#1c1c1e"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Dark Mode</div><div style="font-size:12px;color:var(--t3);margin-top:1px;font-weight:500" id="dm-label">Aus</div></div><div class="tg off" id="dm-toggle" onclick="toggleDark()"><div class="tg-k"></div></div></div>
   </div></div>
@@ -999,7 +1025,7 @@ function toggleDark(){
   const onHome=!document.getElementById('s0').classList.contains('off');
   const sbar=document.getElementById('sbar');
   if(sbar)sbar.style.color=(onHome||isDark)?'#fff':'#1c1c1e';
-  localStorage.setItem('lucien-dark',isDark?'1':'0');
+  localStorage.setItem('lucien-dark',isDark?'1':'0');syncToCloud();
 }
 
 // ─── API Key Modal ───
@@ -1022,7 +1048,7 @@ function saveApiKey(){
   document.getElementById('api-status').textContent='Verbunden · '+masked;
   document.getElementById('api-status').style.color='var(--green)';
   msg.textContent='API Key gespeichert!';msg.style.background='rgba(52,199,89,.08)';msg.style.color='var(--green)';msg.classList.add('show');
-  setTimeout(closeApiModal,1200);
+  setTimeout(closeApiModal,1200);syncToCloud();
 }
 
 // ─── Calendar ───
@@ -1216,7 +1242,7 @@ function grantPerm(toggle,key){
   permissions[key]=true;
   localStorage.setItem('lucien-perms',JSON.stringify(permissions));
   // Show sync animation
-  showSyncToast(p.sync,true);
+  showSyncToast(p.sync,true);syncToCloud();
   // Update status text
   const s=document.querySelector('[data-status="'+key+'"]');
   if(s){s.textContent=p.granted;s.style.color='var(--green)'}
@@ -1340,7 +1366,7 @@ function calcInput(v){
 
 // ─── Notes ───
 function getNotes(){return JSON.parse(localStorage.getItem('lucien-notes')||'[]')}
-function saveNotesData(n){localStorage.setItem('lucien-notes',JSON.stringify(n))}
+function saveNotesData(n){localStorage.setItem('lucien-notes',JSON.stringify(n));syncToCloud();}
 let editingNoteIdx=-1;
 function renderNotes(){
   const notes=getNotes();
@@ -1364,7 +1390,7 @@ function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 
 // ─── Todo ───
 function getTodos(){return JSON.parse(localStorage.getItem('lucien-todos')||'[]')}
-function saveTodosData(t){localStorage.setItem('lucien-todos',JSON.stringify(t))}
+function saveTodosData(t){localStorage.setItem('lucien-todos',JSON.stringify(t));syncToCloud();}
 function renderTodo(){
   const todos=getTodos();const pending=todos.filter(t=>!t.done).length;
   let h='<div class="todo-input-row"><input class="todo-field" id="todo-input" placeholder="Neue Aufgabe..." onkeydown="if(event.key===\'Enter\')addTodo()"><button class="todo-add" onclick="addTodo()">+</button></div>';
@@ -1547,7 +1573,7 @@ function deleteApiKey(){
   document.getElementById('api-input').value='';
   const s=document.getElementById('api-status');s.textContent='Kein Key gesetzt';s.style.color='var(--t4)';
   const msg=document.getElementById('api-msg');msg.textContent='API Key gelöscht.';msg.style.background='rgba(255,59,48,.08)';msg.style.color='var(--red)';msg.classList.add('show');
-  setTimeout(closeApiModal,1200);
+  setTimeout(closeApiModal,1200);syncToCloud();
 }
 
 // ─── Chat History ───
@@ -1572,7 +1598,7 @@ function saveCurrentChat(){
   const days=['So','Mo','Di','Mi','Do','Fr','Sa'];const dayStr=days[now.getDay()];
   chatHistory.unshift({type:currentChatType,title:title,messages:chatMessages.slice(),time:dayStr+' '+timeStr});
   if(chatHistory.length>20)chatHistory=chatHistory.slice(0,20);
-  localStorage.setItem('lucien-chats',JSON.stringify(chatHistory));
+  localStorage.setItem('lucien-chats',JSON.stringify(chatHistory));syncToCloud();
 }
 function loadChat(i){
   const c=chatHistory[i];if(!c)return;
@@ -1595,24 +1621,94 @@ function updateHeroEvents(){
   const el=document.getElementById('hero-events');if(el)el.textContent=count+' Termin'+(count!==1?'e':'');
 }
 
+// ─── Firebase ───
+const FIREBASE_CONFIG={apiKey:"AIzaSyAKJ9CwvBzWCwQFomD7DjnNFz_zHic0FnI",authDomain:"lucien-f61b4.firebaseapp.com",projectId:"lucien-f61b4",storageBucket:"lucien-f61b4.firebasestorage.app",messagingSenderId:"443369845647",appId:"1:443369845647:web:2f228d1925ecbe35c551fa"};
+firebase.initializeApp(FIREBASE_CONFIG);
+const auth=firebase.auth();const db=firebase.firestore();
+let currentUser=null;
+
+function googleSignIn(){
+  const provider=new firebase.auth.GoogleAuthProvider();
+  provider.addScope('https://www.googleapis.com/auth/calendar');
+  provider.addScope('https://www.googleapis.com/auth/calendar.events');
+  provider.addScope('https://www.googleapis.com/auth/gmail.readonly');
+  provider.addScope('https://www.googleapis.com/auth/gmail.send');
+  provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  auth.signInWithPopup(provider).then(result=>{
+    if(result.credential&&result.credential.accessToken){
+      gcalToken=result.credential.accessToken;
+      gcalTokenExpiry=Date.now()+3500000;
+      localStorage.setItem('lucien-gcal-token',gcalToken);
+      localStorage.setItem('lucien-gcal-expiry',String(gcalTokenExpiry));
+    }
+  }).catch(err=>{
+    if(err.code!=='auth/popup-closed-by-user')alert('Login fehlgeschlagen: '+err.message);
+  });
+}
+
+function logOut(){auth.signOut().then(()=>{localStorage.clear();location.reload();});}
+
+let _syncTimer=null;
+function syncToCloud(){
+  if(!currentUser)return;
+  if(_syncTimer)clearTimeout(_syncTimer);
+  _syncTimer=setTimeout(async()=>{
+    try{await db.collection('users').doc(currentUser.uid).set({
+      name:userName||'',email:currentUser.email||'',photoURL:currentUser.photoURL||'',
+      apiKey:savedKey||'',model:currentModel,isDark:isDark,
+      permissions:permissions||{},
+      chats:(chatHistory||[]).slice(0,20),
+      notes:JSON.parse(localStorage.getItem('lucien-notes')||'[]'),
+      todos:JSON.parse(localStorage.getItem('lucien-todos')||'[]'),
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    },{merge:true});}catch(e){console.error('Sync:',e);}
+  },2000);
+}
+
+auth.onAuthStateChanged(async user=>{
+  const ls=document.getElementById('login-screen');
+  if(user){
+    currentUser=user;
+    userName=user.displayName||'';localStorage.setItem('lucien-username',userName);
+    // Load cloud data
+    try{
+      const doc=await db.collection('users').doc(user.uid).get();
+      if(doc.exists){
+        const d=doc.data();
+        if(d.apiKey){savedKey=d.apiKey;localStorage.setItem('lucien-apikey',savedKey);}
+        if(d.model!==undefined)currentModel=d.model;
+        if(d.isDark)localStorage.setItem('lucien-dark','1');
+        if(d.permissions){permissions=d.permissions;localStorage.setItem('lucien-perms',JSON.stringify(permissions));}
+        if(d.chats){chatHistory=d.chats;localStorage.setItem('lucien-chats',JSON.stringify(chatHistory));}
+        if(d.notes)localStorage.setItem('lucien-notes',JSON.stringify(d.notes));
+        if(d.todos)localStorage.setItem('lucien-todos',JSON.stringify(d.todos));
+      }
+    }catch(e){console.error('Load:',e);}
+    // Account section in Settings
+    const accSec=document.getElementById('account-section');if(accSec)accSec.style.display='';
+    const accN=document.getElementById('acc-name');if(accN)accN.textContent=user.displayName||'User';
+    const accE=document.getElementById('acc-email');if(accE)accE.textContent=user.email||'';
+    if(user.photoURL){const wrap=document.getElementById('acc-avatar-wrap');if(wrap)wrap.innerHTML='<img src="'+user.photoURL+'" style="width:30px;height:30px;border-radius:50%;object-fit:cover">';}
+    if(ls)ls.classList.add('hidden');
+    initApp();
+  }else{
+    currentUser=null;if(ls)ls.classList.remove('hidden');
+  }
+});
+
 // ─── Init ───
-(function(){
+function initApp(){
   const sbar=document.getElementById('sbar');
   if(sbar)sbar.style.color='#fff';
 
-  // Calendar init
   const today=new Date();
   calYear=today.getFullYear();calMonth=today.getMonth();selectedDay=today.getDate();
 
-  // Migrate old calendar data format
   const oldCal=localStorage.getItem('lucien-cal');
   if(oldCal){try{const ev=JSON.parse(oldCal);if(typeof ev==='object'&&!Array.isArray(ev)){saveMonthEvents(2026,2,ev);}localStorage.removeItem('lucien-cal');}catch(e){}}
 
-  // Name prompt on first visit
-  if(!userName){setTimeout(()=>{promptName();},600);}
   updateHeroName();
 
-  // Restore API key display
   if(savedKey){
     const s=document.getElementById('api-status');
     s.textContent='Verbunden · sk-ant-...'+savedKey.slice(-4);
@@ -1621,23 +1717,19 @@ function updateHeroEvents(){
     document.getElementById('api-status').style.color='var(--t4)';
   }
 
-  // Restore dark mode
   if(localStorage.getItem('lucien-dark')==='1')toggleDark();
 
   restorePerms();
   buildCalendar();
   updateHeroEvents();
   renderChatList();
-
-  // Google Calendar restore
   updateGcalStatus();
+  document.querySelectorAll('#ms .rd').forEach(r=>r.classList.toggle('on',+r.dataset.i===currentModel));
+
   if(gcalToken&&Date.now()<gcalTokenExpiry){setTimeout(fetchGcalEvents,500);}
-
-  // Weather
   setTimeout(fetchWeather,300);
-
   if(window.innerWidth<=500)setTimeout(showInstallBanner,1500);
-})();
+}
 </script>
 </body>
 </html>
