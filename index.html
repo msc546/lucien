@@ -280,9 +280,48 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 .install-sub{font-size:13px;color:var(--t3);margin-top:2px}
 .install-btn{padding:8px 18px;border-radius:100px;background:var(--blue);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;flex-shrink:0}
 .install-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t4);flex-shrink:0;font-size:20px}
+
+/* ════════════ iOS PERMISSION DIALOG ════════════ */
+.perm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10000;display:none;align-items:center;justify-content:center;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.perm-overlay.show{display:flex}
+.perm-box{width:280px;background:var(--card);border-radius:14px;text-align:center;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.25);animation:fi .2s ease}
+.perm-body{padding:20px 16px 0}
+.perm-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.perm-icon svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.perm-title{font-size:17px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.perm-desc{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:16px}
+.perm-btns{border-top:1px solid var(--sep)}
+.perm-btn{display:block;width:100%;padding:12px;font-size:17px;font-weight:400;color:var(--blue);border:none;background:none;cursor:pointer;font-family:inherit;border-top:1px solid var(--sep)}
+.perm-btn:first-child{border-top:none}
+.perm-btn.allow{font-weight:600}
+.perm-btn:active{background:rgba(0,0,0,.04)}
+
+/* ════════════ SYNC INDICATOR ════════════ */
+.sync-toast{position:fixed;top:env(safe-area-inset-top,50px);left:50%;transform:translateX(-50%) translateY(-100px);background:var(--card);border-radius:14px;padding:12px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:10001;transition:transform .3s cubic-bezier(.4,0,.2,1);font-size:14px;font-weight:600;color:var(--t1);white-space:nowrap}
+.sync-toast.show{transform:translateX(-50%) translateY(10px)}
+.sync-spinner{width:18px;height:18px;border:2.5px solid var(--sep);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+.sync-check svg{width:18px;height:18px;fill:none;stroke:var(--green);stroke-width:2.5;stroke-linecap:round}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
+<!-- PERMISSION DIALOG -->
+<div class="perm-overlay" id="perm-overlay">
+  <div class="perm-box">
+    <div class="perm-body">
+      <div class="perm-icon" id="perm-icon"></div>
+      <div class="perm-title" id="perm-title"></div>
+      <div class="perm-desc" id="perm-desc"></div>
+    </div>
+    <div class="perm-btns">
+      <div class="perm-btn allow" id="perm-allow">Erlauben</div>
+      <div class="perm-btn" id="perm-deny" style="color:var(--red)">Nicht erlauben</div>
+    </div>
+  </div>
+</div>
+<!-- SYNC TOAST -->
+<div class="sync-toast" id="sync-toast"><div class="sync-spinner" id="sync-spin"></div><span id="sync-text">Synchronisiere...</span></div>
+
 <div class="phone">
 <div class="island"></div>
 <div class="sbar" id="sbar"><span class="sbar-t" id="clk">9:41</span><div class="sbar-r"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="3" width="3.5" height="9" rx="1.2"/><rect x="5" y="1.5" width="3.5" height="10.5" rx="1.2"/><rect x="10" y="0" width="3.5" height="12" rx="1.2"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg><svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 3C10.2 3 12.2 3.9 13.6 5.3L15 3.9C13.2 1.8 10.7.5 8 .5S2.8 1.8 1 3.9L2.4 5.3C3.8 3.9 5.8 3 8 3Z" opacity=".35"/><path d="M8 6.2C9.5 6.2 10.8 6.8 11.8 7.7L13.2 6.3C11.8 5 10 4.2 8 4.2S4.2 5 2.8 6.3L4.2 7.7C5.2 6.8 6.5 6.2 8 6.2Z" opacity=".65"/><circle cx="8" cy="11" r="1.8"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y="1" width="23" height="11" rx="4" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="24.5" y="4.5" width="2" height="4" rx="1" opacity=".4"/><rect x="2" y="2.5" width="18" height="8" rx="2.5"/></svg></div></div>
@@ -344,7 +383,7 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
   <div class="pg-hdr"><div class="pg-t">Kalender</div></div>
   <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 22px 0"><span style="font-size:20px;font-weight:800;color:var(--t1)">März 2026</span><span style="font-size:14px;font-weight:600;color:var(--blue);cursor:pointer" onclick="openEvModal()">+ Neuer Termin</span></div>
   <div class="cg" id="cal-grid"></div>
-  <div class="ev-new"><div class="ev-badge">Von Lucien erstellt</div><div class="ev-title">PaTiLu Pizzaabend</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Sa, 14. März · 19:00 – 22:00</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="2"/></svg>Bei Luca</div><div class="ev-btns"><button class="ev-btn ev-p" onclick="this.textContent='Gespeichert';this.style.background='var(--green)'">Speichern</button><button class="ev-btn ev-s">Bearbeiten</button></div></div>
+  <div class="ev-new"><div class="ev-badge">Von Lucien erstellt</div><div class="ev-title">PaTiLu Pizzaabend</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Sa, 14. März · 19:00 – 22:00</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="2"/></svg>Bei Luca</div><div class="ev-btns"><button class="ev-btn ev-p" onclick="exportEventToCalendar('PaTiLu Pizzaabend',14,'19','Bei Luca')">In Kalender</button><button class="ev-btn ev-s" onclick="openEvModal()">Bearbeiten</button></div></div>
   <div id="cal-day-events">
     <div class="cal-ev-hdr" id="cal-day-title">Heute — Mo, 9. März</div>
     <div class="cal-events" id="cal-ev-list"></div>
@@ -379,12 +418,12 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
     <div class="sr" onclick="sm(2)"><div class="rd" data-i="2"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Opus 4.5 <span style="font-size:11px;font-weight:700;color:var(--purple)">Maximum</span></div><div style="font-size:12px;color:var(--t3);font-family:monospace;margin-top:1px">$5 / $25 pro MTok</div></div></div>
   </div></div>
   <div class="sg"><div class="sg-t">Zugriff</div><div class="sc">
-    <div class="sr"><div class="sr-ic" style="background:var(--blue)"><svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">iCloud Drive</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">3 Ordner</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
-    <div class="sr"><div class="sr-ic" style="background:var(--orange)"><svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Fotos</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Voller Zugriff</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
-    <div class="sr"><div class="sr-ic" style="background:var(--purple)"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Kalender</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Lesen & Schreiben</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
-    <div class="sr"><div class="sr-ic" style="background:var(--teal)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Kontakte</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Nur lesen</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
-    <div class="sr"><div class="sr-ic" style="background:var(--pink)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Apple Notes</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Lesen & Schreiben</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
-    <div class="sr"><div class="sr-ic" style="background:var(--red)"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2z"/><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Erinnerungen</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Lesen & Schreiben</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--blue)"><svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">iCloud Drive</div><div style="font-size:12px;color:var(--t4);margin-top:1px;font-weight:500" data-status="files">Nicht verbunden</div></div><div class="tg off" data-perm="files" onclick="requestPerm(this,'files')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--orange)"><svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Fotos</div><div style="font-size:12px;color:var(--t4);margin-top:1px;font-weight:500" data-status="photos">Nicht verbunden</div></div><div class="tg off" data-perm="photos" onclick="requestPerm(this,'photos')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--purple)"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Kalender</div><div style="font-size:12px;color:var(--t4);margin-top:1px;font-weight:500" data-status="calendar">Nicht verbunden</div></div><div class="tg off" data-perm="calendar" onclick="requestPerm(this,'calendar')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--teal)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Kontakte</div><div style="font-size:12px;color:var(--t4);margin-top:1px;font-weight:500" data-status="contacts">Nicht verbunden</div></div><div class="tg off" data-perm="contacts" onclick="requestPerm(this,'contacts')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--pink)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Apple Notes</div><div style="font-size:12px;color:var(--t4);margin-top:1px;font-weight:500" data-status="notes">Nicht verbunden</div></div><div class="tg off" data-perm="notes" onclick="requestPerm(this,'notes')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--red)"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2z"/><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Erinnerungen</div><div style="font-size:12px;color:var(--t4);margin-top:1px;font-weight:500" data-status="reminders">Nicht verbunden</div></div><div class="tg off" data-perm="reminders" onclick="requestPerm(this,'reminders')"><div class="tg-k"></div></div></div>
   </div></div>
   <div class="sg"><div class="sg-t">Verbrauch</div><div class="sc" style="padding:16px"><div style="display:flex;justify-content:space-between"><span style="font-size:14px;color:var(--t2)">Tokens heute</span><span style="font-size:14px;font-weight:700;font-family:monospace;color:var(--t1)">127.4K</span></div><div style="height:5px;background:var(--sep);border-radius:3px;margin:8px 0"><div style="height:5px;width:35%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--purple))"></div></div><div style="display:flex;justify-content:space-between"><span style="font-size:14px;color:var(--t2)">Kosten</span><span style="font-size:14px;font-weight:700;color:var(--green);font-family:monospace">$0.47</span></div></div></div>
 </div>
@@ -778,27 +817,183 @@ function saveEvent(){
   buildCalendar();
   selectDay(d);
   closeEvModal();
+  // Offer to export to real calendar
+  if(confirm('Termin auch in Apple Kalender exportieren?')){
+    const h=time.match(/(\d+)/);
+    exportEventToCalendar(t,d,h?h[1]:'9','');
+  }
 }
 
-// ─── Permission Toggles ───
-document.querySelectorAll('#s4 .tg').forEach(tg=>{
-  if(tg.id==='dm-toggle')return;
-  tg.addEventListener('click',function(){
-    const isOn=this.classList.contains('on');
-    if(!isOn){
-      // Turning on - simulate permission request
-      const label=this.closest('.sr').querySelector('div[style*="font-size:15px"]');
-      const name=label?label.textContent:'';
-      if(name==='Kontakte'){
-        // Can't access contacts on web
-        const sub=this.closest('.sr').querySelector('div[style*="margin-top:1px"]');
-        if(sub){sub.textContent='Nur in nativer App';sub.style.color='var(--orange)'}
+// ─── Permission System ───
+const PERMS={
+  files:{
+    title:'"Lucien" moechte auf deine Dateien zugreifen',
+    desc:'Damit kann Lucien Dateien in iCloud Drive lesen, sortieren und organisieren.',
+    icon:'var(--blue)',
+    svg:'<path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>',
+    granted:'3 Ordner',
+    sync:'Dateien synchronisiert'
+  },
+  photos:{
+    title:'"Lucien" moechte auf deine Fotos zugreifen',
+    desc:'Lucien kann deine Fotos analysieren, in Alben sortieren und unscharfe Bilder erkennen.',
+    icon:'var(--orange)',
+    svg:'<path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/><circle cx="16" cy="9" r="2"/>',
+    granted:'Voller Zugriff',
+    sync:'Fotos synchronisiert'
+  },
+  calendar:{
+    title:'"Lucien" moechte auf deinen Kalender zugreifen',
+    desc:'Lucien kann Termine lesen, neue erstellen und Konflikte erkennen. Deine Kalender-Daten werden lokal gespeichert.',
+    icon:'var(--purple)',
+    svg:'<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+    granted:'Lesen & Schreiben',
+    sync:'Kalender synchronisiert'
+  },
+  contacts:{
+    title:'"Lucien" moechte auf deine Kontakte zugreifen',
+    desc:'Lucien kann Kontakte durchsuchen und Informationen wie Telefonnummern oder E-Mail-Adressen finden.',
+    icon:'var(--teal)',
+    svg:'<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>',
+    granted:'Nur lesen',
+    sync:'Kontakte synchronisiert'
+  },
+  notes:{
+    title:'"Lucien" moechte auf deine Notizen zugreifen',
+    desc:'Lucien kann Apple Notes lesen, neue erstellen und bestehende bearbeiten oder zusammenfassen.',
+    icon:'var(--pink)',
+    svg:'<path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+    granted:'Lesen & Schreiben',
+    sync:'Notizen synchronisiert'
+  },
+  reminders:{
+    title:'"Lucien" moechte dir Mitteilungen senden',
+    desc:'Lucien kann Erinnerungen mit Benachrichtigungen setzen, damit du nichts vergisst.',
+    icon:'var(--red)',
+    svg:'<path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2z"/><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>',
+    granted:'Lesen & Schreiben',
+    sync:'Erinnerungen aktiviert'
+  }
+};
+let permissions=JSON.parse(localStorage.getItem('lucien-perms')||'{}');
+
+function requestPerm(toggle,key){
+  // If already on, turn off
+  if(toggle.classList.contains('on')){
+    toggle.classList.remove('on');toggle.classList.add('off');
+    delete permissions[key];
+    localStorage.setItem('lucien-perms',JSON.stringify(permissions));
+    const s=document.querySelector('[data-status="'+key+'"]');
+    if(s){s.textContent='Nicht verbunden';s.style.color='var(--t4)'}
+    return;
+  }
+  // Show iOS-style permission dialog
+  const p=PERMS[key];if(!p)return;
+  const overlay=document.getElementById('perm-overlay');
+  document.getElementById('perm-icon').style.background=p.icon;
+  document.getElementById('perm-icon').innerHTML='<svg viewBox="0 0 24 24">'+p.svg+'</svg>';
+  document.getElementById('perm-title').textContent=p.title;
+  document.getElementById('perm-desc').textContent=p.desc;
+  overlay.classList.add('show');
+
+  const allow=document.getElementById('perm-allow');
+  const deny=document.getElementById('perm-deny');
+  const onAllow=async()=>{
+    overlay.classList.remove('show');
+    cleanup();
+    // Special: reminders = real notification permission
+    if(key==='reminders'&&'Notification' in window){
+      const result=await Notification.requestPermission();
+      if(result!=='granted'){
+        showSyncToast('Benachrichtigungen blockiert',false);
         return;
       }
     }
-    this.classList.toggle('on');this.classList.toggle('off');
+    // Special: files/photos = open file picker to prove access
+    if(key==='files'){document.getElementById('file-picker').click()}
+    if(key==='photos'){
+      const inp=document.createElement('input');
+      inp.type='file';inp.accept='image/*';inp.multiple=true;
+      inp.onchange=()=>{};inp.click();
+    }
+    // Grant permission
+    grantPerm(toggle,key);
+  };
+  const onDeny=()=>{
+    overlay.classList.remove('show');
+    cleanup();
+  };
+  const cleanup=()=>{
+    allow.removeEventListener('click',onAllow);
+    deny.removeEventListener('click',onDeny);
+  };
+  allow.addEventListener('click',onAllow);
+  deny.addEventListener('click',onDeny);
+}
+
+function grantPerm(toggle,key){
+  const p=PERMS[key];
+  toggle.classList.remove('off');toggle.classList.add('on');
+  permissions[key]=true;
+  localStorage.setItem('lucien-perms',JSON.stringify(permissions));
+  // Show sync animation
+  showSyncToast(p.sync,true);
+  // Update status text
+  const s=document.querySelector('[data-status="'+key+'"]');
+  if(s){s.textContent=p.granted;s.style.color='var(--green)'}
+}
+
+function showSyncToast(text,success){
+  const toast=document.getElementById('sync-toast');
+  const spin=document.getElementById('sync-spin');
+  const txt=document.getElementById('sync-text');
+  txt.textContent='Synchronisiere...';
+  spin.className='sync-spinner';
+  toast.classList.add('show');
+  setTimeout(()=>{
+    spin.className='sync-check';
+    spin.innerHTML=success?'<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>':'<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="var(--red)"/></svg>';
+    txt.textContent=text;
+  },1200);
+  setTimeout(()=>{toast.classList.remove('show')},3000);
+}
+
+// Restore saved permissions on load
+function restorePerms(){
+  Object.keys(permissions).forEach(key=>{
+    const tg=document.querySelector('[data-perm="'+key+'"]');
+    const s=document.querySelector('[data-status="'+key+'"]');
+    const p=PERMS[key];
+    if(tg&&p){
+      tg.classList.remove('off');tg.classList.add('on');
+      if(s){s.textContent=p.granted;s.style.color='var(--green)'}
+    }
   });
-});
+}
+
+// ─── Calendar .ics Export ───
+function exportEventToCalendar(title,date,timeStr,location){
+  const y=2026,m=3;
+  const startH=parseInt(timeStr)||9,startM=0;
+  const dtStart=y+String(m).padStart(2,'0')+String(date).padStart(2,'0')+'T'+String(startH).padStart(2,'0')+String(startM).padStart(2,'0')+'00';
+  const endH=startH+1;
+  const dtEnd=y+String(m).padStart(2,'0')+String(date).padStart(2,'0')+'T'+String(endH).padStart(2,'0')+'00'+'00';
+  const ics=[
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Lucien//iOS//DE',
+    'BEGIN:VEVENT',
+    'DTSTART:'+dtStart,'DTEND:'+dtEnd,
+    'SUMMARY:'+title,
+    location?'LOCATION:'+location:'',
+    'DESCRIPTION:Erstellt mit Lucien',
+    'END:VEVENT','END:VCALENDAR'
+  ].filter(Boolean).join('\r\n');
+  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=title.replace(/\s/g,'_')+'.ics';
+  a.click();URL.revokeObjectURL(url);
+  showSyncToast('Termin exportiert — in Kalender-App oeffnen',true);
+}
 
 // ─── Install Banner ───
 let deferredPrompt=null;
@@ -840,6 +1035,7 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPro
   // Restore dark mode
   if(localStorage.getItem('lucien-dark')==='1')toggleDark();
 
+  restorePerms();
   buildCalendar();
   if(window.innerWidth<=500)setTimeout(showInstallBanner,1500);
 })();
