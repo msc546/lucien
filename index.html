@@ -1639,6 +1639,16 @@ firebase.initializeApp(FIREBASE_CONFIG);
 const auth=firebase.auth();const db=firebase.firestore();
 let currentUser=null;
 
+// Handle redirect result (mobile login)
+auth.getRedirectResult().then(result=>{
+  if(result.credential&&result.credential.accessToken){
+    gcalToken=result.credential.accessToken;
+    gcalTokenExpiry=Date.now()+3500000;
+    localStorage.setItem('lucien-gcal-token',gcalToken);
+    localStorage.setItem('lucien-gcal-expiry',String(gcalTokenExpiry));
+  }
+}).catch(err=>{if(err.code!=='auth/popup-closed-by-user')console.error('Redirect:',err);});
+
 function googleSignIn(){
   const provider=new firebase.auth.GoogleAuthProvider();
   provider.addScope('https://www.googleapis.com/auth/calendar');
@@ -1646,16 +1656,21 @@ function googleSignIn(){
   provider.addScope('https://www.googleapis.com/auth/gmail.readonly');
   provider.addScope('https://www.googleapis.com/auth/gmail.send');
   provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-  auth.signInWithPopup(provider).then(result=>{
-    if(result.credential&&result.credential.accessToken){
-      gcalToken=result.credential.accessToken;
-      gcalTokenExpiry=Date.now()+3500000;
-      localStorage.setItem('lucien-gcal-token',gcalToken);
-      localStorage.setItem('lucien-gcal-expiry',String(gcalTokenExpiry));
-    }
-  }).catch(err=>{
-    if(err.code!=='auth/popup-closed-by-user')alert('Login fehlgeschlagen: '+err.message);
-  });
+  const isMobile=window.innerWidth<=500||/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if(isMobile){
+    auth.signInWithRedirect(provider);
+  }else{
+    auth.signInWithPopup(provider).then(result=>{
+      if(result.credential&&result.credential.accessToken){
+        gcalToken=result.credential.accessToken;
+        gcalTokenExpiry=Date.now()+3500000;
+        localStorage.setItem('lucien-gcal-token',gcalToken);
+        localStorage.setItem('lucien-gcal-expiry',String(gcalTokenExpiry));
+      }
+    }).catch(err=>{
+      if(err.code!=='auth/popup-closed-by-user'&&err.code!=='auth/cancelled-popup-request')alert('Login fehlgeschlagen: '+err.message);
+    });
+  }
 }
 
 function logOut(){auth.signOut().then(()=>{localStorage.clear();location.reload();});}
