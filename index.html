@@ -15,7 +15,7 @@
 .dark{--bg:#000;--card:#1c1c1e;--t1:#f5f5f7;--t2:#aeaeb2;--t3:#8e8e93;--t4:#636366;--t5:#48484a;--t6:#3a3a3c;--sep:rgba(255,255,255,.06);--nav-bg:rgba(28,28,30,.94);--nav-border:rgba(255,255,255,.08);--search-bg:rgba(118,118,128,.2);--chat-bg:#000;--chat-input-bg:#1c1c1e;--hdr-bg:rgba(0,0,0,.85);--overlay-bg:rgba(0,0,0,.7)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 ::-webkit-scrollbar{display:none}
-body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;padding:32px 12px 60px;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;color:var(--t1)}
+body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:32px 12px;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;color:var(--t1)}
 
 .phone{width:393px;height:852px;background:var(--bg);border-radius:55px;overflow:hidden;position:relative;color:var(--t1);box-shadow:0 0 0 1.5px rgba(0,0,0,.08),0 0 0 11px #19191d,0 0 0 12.5px rgba(255,255,255,.1),0 50px 100px rgba(0,0,0,.3)}
 .island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:126px;height:37px;background:#000;border-radius:20px;z-index:200}
@@ -247,24 +247,27 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
 
 /* ════════════ MOBILE: FULLSCREEN WEBAPP ════════════ */
 @media(max-width:500px){
-  body{background:var(--bg)!important;padding:0;margin:0;min-height:100dvh;min-height:-webkit-fill-available;display:block;overflow:hidden}
-  .phone{width:100%;height:100dvh;height:-webkit-fill-available;border-radius:0;box-shadow:none;position:fixed;inset:0;z-index:1}
+  html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden}
+  body{background:var(--bg)!important;display:block}
+  .phone{width:100%;height:100%;border-radius:0;box-shadow:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:1}
   .island{display:none}
   .sbar{display:none}
-  .scr{top:env(safe-area-inset-top,0px);bottom:calc(84px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch;touch-action:pan-y}
-  #s1b{top:env(safe-area-inset-top,0px);bottom:calc(84px + env(safe-area-inset-bottom,0px))}
-  .bn{height:calc(84px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
-  .modal-overlay{border-radius:0}
-  .hero{padding-top:max(52px, calc(env(safe-area-inset-top,0px) + 20px))}
-  .pg-hdr{padding-top:max(16px, calc(env(safe-area-inset-top,0px) + 8px))}
-  .c-top{padding-top:max(12px, calc(env(safe-area-inset-top,0px) + 4px))}
+  .scr{top:env(safe-area-inset-top,47px);bottom:calc(56px + env(safe-area-inset-bottom,34px));-webkit-overflow-scrolling:touch;touch-action:pan-y}
+  #s1b{top:env(safe-area-inset-top,47px);bottom:calc(56px + env(safe-area-inset-bottom,34px))}
+  .bn{height:calc(56px + env(safe-area-inset-bottom,34px));padding:4px 0 env(safe-area-inset-bottom,34px);box-sizing:border-box}
+  .ni{padding-top:2px}
+  .modal-overlay,.ev-modal{border-radius:0}
+  .hero{padding-top:16px}
+  .pg-hdr{padding-top:12px}
+  .c-top{padding-top:8px}
+  .c-in{padding-bottom:max(12px,env(safe-area-inset-bottom,34px))}
   /* Better touch targets */
-  .h-card{min-height:100px}
-  .ni{min-height:48px;min-width:48px}
-  .cl-item{min-height:60px}
-  .h-list-row{min-height:52px}
-  .cd{min-width:40px;min-height:40px}
-  .tg{min-width:50px;min-height:30px}
+  .h-card{min-height:90px}
+  .ni{min-height:44px;min-width:44px}
+  .cl-item{min-height:56px}
+  .h-list-row{min-height:50px}
+  .cd{min-width:38px;min-height:38px}
+  .tg{min-width:48px;min-height:28px}
 }
 
 /* ════════════ INSTALL BANNER ════════════ */
@@ -290,14 +293,16 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
   <div class="h-search"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>Frag Claude etwas…</span></div>
   <div class="h-sec">Schnellzugriff</div>
   <div class="h-grid">
-    <div class="h-card" onclick="openChat('files')"><div class="h-card-glow" style="color:var(--blue)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#007aff,#5856d6)"><svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div><div class="h-card-t">Dateien sortieren</div><div class="h-card-s">iCloud Drive aufräumen</div></div>
-    <div class="h-card" onclick="openChat('photos')"><div class="h-card-glow" style="color:var(--orange)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#ff9500,#ff3b30)"><svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/><circle cx="16" cy="9" r="2"/><path d="M3 17l5-5 3 3 4-4 6 6"/></svg></div><div class="h-card-t">Fotos sortieren</div><div class="h-card-s">Alben automatisch erstellen</div></div>
-    <div class="h-card" onclick="openChat('email')"><div class="h-card-glow" style="color:var(--green)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#34c759,#30d158)"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="h-card-t">Nachricht schreiben</div><div class="h-card-s">E-Mail, WhatsApp, SMS</div></div>
-    <div class="h-card" onclick="openChat('meeting')"><div class="h-card-glow" style="color:var(--purple)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#af52de,#5856d6)"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div class="h-card-t">Termin erstellen</div><div class="h-card-s">Kalender per Chat</div></div>
+    <div class="h-card" onclick="openChat('files')"><div class="h-card-glow" style="color:var(--blue)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#007aff,#5856d6)"><svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div><div class="h-card-t">Dateien</div><div class="h-card-s">Durchsuchen & sortieren</div></div>
+    <div class="h-card" onclick="openChat('photos')"><div class="h-card-glow" style="color:var(--orange)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#ff9500,#ff3b30)"><svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/><circle cx="16" cy="9" r="2"/><path d="M3 17l5-5 3 3 4-4 6 6"/></svg></div><div class="h-card-t">Fotos</div><div class="h-card-s">Alben & sortieren</div></div>
+    <div class="h-card" onclick="openChat('notes')"><div class="h-card-glow" style="color:var(--pink)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#ff2d55,#ff6482)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div class="h-card-t">Apple Notes</div><div class="h-card-s">Lesen & schreiben</div></div>
+    <div class="h-card" onclick="openChat('meeting')"><div class="h-card-glow" style="color:var(--purple)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#af52de,#5856d6)"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div class="h-card-t">Kalender</div><div class="h-card-s">Termine lesen & erstellen</div></div>
+    <div class="h-card" onclick="openChat('contacts')"><div class="h-card-glow" style="color:var(--teal)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#32ade6,#007aff)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div class="h-card-t">Kontakte</div><div class="h-card-s">Lesen & durchsuchen</div></div>
+    <div class="h-card" onclick="openChat('reminders')"><div class="h-card-glow" style="color:var(--red)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#ff3b30,#ff6961)"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2z"/><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><div class="h-card-t">Erinnerungen</div><div class="h-card-s">Setzen & verwalten</div></div>
   </div>
-  <div class="h-sec">Weitere Tools</div>
+  <div class="h-sec">Mehr</div>
   <div class="h-list">
-    <div class="h-list-row" onclick="openChat('notes')"><div class="h-list-ic" style="background:var(--pink)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div style="flex:1"><div class="h-list-t">Notizen zusammenfassen</div><div class="h-list-s">Meeting-Notes auf den Punkt</div></div><span style="color:var(--t6);font-size:17px">›</span></div>
+    <div class="h-list-row" onclick="openChat('email')"><div class="h-list-ic" style="background:var(--green)"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div style="flex:1"><div class="h-list-t">Nachricht schreiben</div><div class="h-list-s">E-Mail, WhatsApp, SMS</div></div><span style="color:var(--t6);font-size:17px">›</span></div>
     <div class="h-list-row" onclick="openChat('clipboard')"><div class="h-list-ic" style="background:var(--teal)"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div><div style="flex:1"><div class="h-list-t">Clipboard verarbeiten</div><div class="h-list-s">Text analysieren & umschreiben</div></div><span style="color:var(--t6);font-size:17px">›</span></div>
   </div>
   <div class="h-sec">Verlauf</div>
@@ -318,7 +323,9 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
     <div class="cl-item" onclick="openChat('photos')"><div class="cl-av" style="background:linear-gradient(140deg,var(--orange),var(--red))"><svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/><circle cx="16" cy="9" r="2"/></svg></div><div class="cl-txt"><div class="cl-name">Fotos sortieren</div><div class="cl-pre">50 Fotos analysiert. 4 Alben erstellt, 3 unscharfe markiert.</div></div><div class="cl-meta"><div class="cl-time">Gestern</div></div></div>
     <div class="cl-item" onclick="openChat('email')"><div class="cl-av" style="background:linear-gradient(140deg,var(--green),#30d158)"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="cl-txt"><div class="cl-name">Krankmeldung</div><div class="cl-pre">E-Mail vorbereitet und in Zwischenablage kopiert.</div></div><div class="cl-meta"><div class="cl-time">Mo</div></div></div>
     <div class="cl-item" onclick="openChat('meeting')"><div class="cl-av" style="background:linear-gradient(140deg,var(--purple),var(--indigo))"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div class="cl-txt"><div class="cl-name">PaTiLu Pizzaabend</div><div class="cl-pre">Termin erstellt: Sa 14. März, 19:00 bei Luca</div></div><div class="cl-meta"><div class="cl-time">Mo</div></div></div>
-    <div class="cl-item" onclick="openChat('whatsapp')"><div class="cl-av" style="background:linear-gradient(140deg,var(--green),var(--teal))"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="cl-txt"><div class="cl-name">Lilian — WhatsApp</div><div class="cl-pre">Hey Schatz, ich komme heute etwas später…</div></div><div class="cl-meta"><div class="cl-time">So</div></div></div>
+    <div class="cl-item" onclick="openChat('whatsapp')"><div class="cl-av" style="background:linear-gradient(140deg,var(--green),var(--teal))"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="cl-txt"><div class="cl-name">Lilian — WhatsApp</div><div class="cl-pre">Hey Schatz, ich komme heute etwas spaeter...</div></div><div class="cl-meta"><div class="cl-time">So</div></div></div>
+    <div class="cl-item" onclick="openChat('contacts')"><div class="cl-av" style="background:linear-gradient(140deg,var(--teal),var(--blue))"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="cl-txt"><div class="cl-name">Kontakte durchsuchen</div><div class="cl-pre">Telefonnummer von Luca gesucht</div></div><div class="cl-meta"><div class="cl-time">Sa</div></div></div>
+    <div class="cl-item" onclick="openChat('reminders')"><div class="cl-av" style="background:linear-gradient(140deg,var(--red),#ff6961)"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2z"/><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><div class="cl-txt"><div class="cl-name">Erinnerung gesetzt</div><div class="cl-pre">Morgen 8:00 — iPad-Enrollment BSZ</div></div><div class="cl-meta"><div class="cl-time">Fr</div></div></div>
   </div>
   <div style="text-align:center;padding:20px"><div style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--blue);color:#fff;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer" onclick="openChat('files')">Neuer Chat</div></div>
 </div>
@@ -337,7 +344,7 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
   <div class="pg-hdr"><div class="pg-t">Kalender</div></div>
   <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 22px 0"><span style="font-size:20px;font-weight:800;color:var(--t1)">März 2026</span><span style="font-size:14px;font-weight:600;color:var(--blue);cursor:pointer" onclick="openEvModal()">+ Neuer Termin</span></div>
   <div class="cg" id="cal-grid"></div>
-  <div class="ev-new"><div class="ev-badge">Von OpenClaw erstellt</div><div class="ev-title">PaTiLu Pizzaabend</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Sa, 14. März · 19:00 – 22:00</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="2"/></svg>Bei Luca</div><div class="ev-btns"><button class="ev-btn ev-p" onclick="this.textContent='Gespeichert';this.style.background='var(--green)'">Speichern</button><button class="ev-btn ev-s">Bearbeiten</button></div></div>
+  <div class="ev-new"><div class="ev-badge">Von Lucien erstellt</div><div class="ev-title">PaTiLu Pizzaabend</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Sa, 14. März · 19:00 – 22:00</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="2"/></svg>Bei Luca</div><div class="ev-btns"><button class="ev-btn ev-p" onclick="this.textContent='Gespeichert';this.style.background='var(--green)'">Speichern</button><button class="ev-btn ev-s">Bearbeiten</button></div></div>
   <div id="cal-day-events">
     <div class="cal-ev-hdr" id="cal-day-title">Heute — Mo, 9. März</div>
     <div class="cal-events" id="cal-ev-list"></div>
@@ -375,7 +382,9 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
     <div class="sr"><div class="sr-ic" style="background:var(--blue)"><svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">iCloud Drive</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">3 Ordner</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
     <div class="sr"><div class="sr-ic" style="background:var(--orange)"><svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Fotos</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Voller Zugriff</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
     <div class="sr"><div class="sr-ic" style="background:var(--purple)"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Kalender</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Lesen & Schreiben</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
-    <div class="sr"><div class="sr-ic" style="background:var(--t5)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Kontakte</div><div style="font-size:12px;color:var(--t4);margin-top:1px;font-weight:500">Nicht verbunden</div></div><div class="tg off" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--teal)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Kontakte</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Nur lesen</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--pink)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Apple Notes</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Lesen & Schreiben</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
+    <div class="sr"><div class="sr-ic" style="background:var(--red)"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2z"/><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Erinnerungen</div><div style="font-size:12px;color:var(--green);margin-top:1px;font-weight:500">Lesen & Schreiben</div></div><div class="tg on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tg-k"></div></div></div>
   </div></div>
   <div class="sg"><div class="sg-t">Verbrauch</div><div class="sc" style="padding:16px"><div style="display:flex;justify-content:space-between"><span style="font-size:14px;color:var(--t2)">Tokens heute</span><span style="font-size:14px;font-weight:700;font-family:monospace;color:var(--t1)">127.4K</span></div><div style="height:5px;background:var(--sep);border-radius:3px;margin:8px 0"><div style="height:5px;width:35%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--purple))"></div></div><div style="display:flex;justify-content:space-between"><span style="font-size:14px;color:var(--t2)">Kosten</span><span style="font-size:14px;font-weight:700;color:var(--green);font-family:monospace">$0.47</span></div></div></div>
 </div>
@@ -463,16 +472,28 @@ const SHORTCUTS={
     quickActions:['Krankmeldung','Bewerbung','Formelle Anfrage']
   },
   meeting:{
-    title:'Termin erstellen',
-    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte einen Kalendertermin erstellen. Frage nach: Was fuer ein Termin? Wann (Datum + Uhrzeit)? Wo? Wer ist dabei? Antworte auf Deutsch.',
-    greeting:'Was fuer einen Termin moechtest du erstellen?\n\nSag mir:\n- Was? (z.B. "Pizzaabend")\n- Wann? (Datum + Uhrzeit)\n- Wo?\n- Mit wem?',
-    quickActions:['Meeting morgen','Arzttermin','Treffen am Wochenende']
+    title:'Kalender',
+    system:'Du bist Lucien, ein iOS-Assistent mit Zugriff auf den iOS-Kalender (via EventKit). Du kannst Termine lesen, erstellen, bearbeiten und loeschen. Du siehst alle Kalender des Nutzers. Frage was er braucht: Termine anzeigen, neuen Termin erstellen, oder bestehende aendern? Antworte auf Deutsch.',
+    greeting:'Was moechtest du mit deinem Kalender machen?\n\nIch kann:\n- Termine fuer einen Tag/Woche anzeigen\n- Neue Termine erstellen\n- Bestehende Termine aendern oder loeschen\n- Terminkonflikte pruefen',
+    quickActions:['Termine heute','Neuer Termin','Diese Woche']
+  },
+  contacts:{
+    title:'Kontakte',
+    system:'Du bist Lucien, ein iOS-Assistent mit Zugriff auf die iOS-Kontakte (via ContactsFramework). Du kannst Kontakte lesen, durchsuchen, neue erstellen und bestehende bearbeiten. Frage den Nutzer was er mit seinen Kontakten machen moechte. Antworte auf Deutsch.',
+    greeting:'Was moechtest du mit deinen Kontakten machen?\n\nIch kann:\n- Kontakte durchsuchen\n- Kontaktdetails anzeigen (Nummer, E-Mail, Adresse)\n- Neue Kontakte erstellen\n- Bestehende bearbeiten\n- Gruppen verwalten',
+    quickActions:['Kontakt suchen','Neuer Kontakt','Gruppen anzeigen']
+  },
+  reminders:{
+    title:'Erinnerungen',
+    system:'Du bist Lucien, ein iOS-Assistent mit Zugriff auf iOS-Erinnerungen (via EventKit/Reminders). Du kannst Erinnerungen lesen, erstellen, bearbeiten und als erledigt markieren. Du kannst auch Erinnerungen mit Datum/Uhrzeit oder Ort verknuepfen. Frage den Nutzer was er braucht. Antworte auf Deutsch.',
+    greeting:'Was fuer eine Erinnerung soll ich setzen?\n\nIch kann:\n- Erinnerungen mit Datum & Uhrzeit erstellen\n- Ortsbezogene Erinnerungen (z.B. "Wenn ich zu Hause bin")\n- Erinnerungslisten anzeigen\n- Bestehende abhaken oder loeschen',
+    quickActions:['Erinnerung morgen','Einkaufsliste','Alle anzeigen']
   },
   notes:{
-    title:'Notizen zusammenfassen',
-    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte Notizen zusammenfassen oder verarbeiten. Frage nach: Welche Notizen? Was soll damit passieren (Zusammenfassung, TODO-Liste, Lernkarten)? Antworte auf Deutsch.',
-    greeting:'Welche Notizen soll ich bearbeiten?\n\nIch kann:\n- Notizen zusammenfassen\n- TODO-Listen erstellen\n- Lernkarten generieren\n\nBeschreib mir was du brauchst oder fuege Text ein.',
-    quickActions:['Zusammenfassen','TODO-Liste','Lernkarten']
+    title:'Apple Notes',
+    system:'Du bist Lucien, ein iOS-Assistent mit Zugriff auf Apple Notes (via EventKit/Notes API). Du kannst Notizen lesen, neue erstellen, bestehende bearbeiten und durchsuchen. Frage den Nutzer was er mit seinen Notizen machen moechte. Antworte auf Deutsch, kurz und hilfreich.',
+    greeting:'Was moechtest du mit deinen Notizen machen?\n\nIch kann:\n- Notizen lesen und durchsuchen\n- Neue Notizen erstellen\n- Bestehende Notizen bearbeiten\n- Notizen zusammenfassen\n- TODO-Listen erstellen',
+    quickActions:['Notizen durchsuchen','Neue Notiz erstellen','Zusammenfassen']
   },
   clipboard:{
     title:'Clipboard verarbeiten',
