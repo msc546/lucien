@@ -119,10 +119,26 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
 .dots span:nth-child(2){animation-delay:.15s}
 .dots span:nth-child(3){animation-delay:.3s}
 .c-in{padding:8px 14px 30px;background:var(--nav-bg);backdrop-filter:blur(30px);border-top:.5px solid var(--sep)}
-.c-row{display:flex;align-items:flex-end;gap:8px;background:var(--chat-input-bg);border-radius:22px;padding:6px 6px 6px 18px}
-.c-ph{flex:1;font-size:16px;color:var(--t5);padding:6px 0}
-.c-send{width:34px;height:34px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0}
+.c-row{display:flex;align-items:flex-end;gap:6px;background:var(--chat-input-bg);border-radius:22px;padding:6px 6px 6px 4px}
+.c-attach{width:34px;height:34px;border-radius:50%;background:none;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--t4)}
+.c-attach svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.c-input{flex:1;font-size:16px;color:var(--t1);padding:7px 4px;border:none;background:transparent;outline:none;font-family:inherit;resize:none;max-height:100px;line-height:1.4}
+.c-input::placeholder{color:var(--t5)}
+.c-send{width:34px;height:34px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;transition:opacity .15s}
+.c-send:disabled{opacity:.35}
 .c-send svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.c-quick{display:flex;gap:8px;padding:8px 14px 0;flex-wrap:wrap}
+.c-quick-btn{padding:8px 14px;border-radius:100px;background:var(--card);border:1px solid var(--sep);font-size:13px;font-weight:600;color:var(--blue);cursor:pointer;font-family:inherit;white-space:nowrap}
+.c-quick-btn:active{background:rgba(0,122,255,.06)}
+
+/* Add event modal */
+.ev-modal{position:absolute;inset:0;background:var(--overlay-bg);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s;border-radius:55px;overflow:hidden}
+.ev-modal.open{opacity:1;visibility:visible}
+.ev-form{width:calc(100% - 48px);background:var(--card);border-radius:20px;padding:24px;box-shadow:0 8px 40px rgba(0,0,0,.2);transform:scale(.95);transition:transform .2s}
+.ev-modal.open .ev-form{transform:scale(1)}
+.ev-field{width:100%;padding:13px 16px;border-radius:12px;border:1.5px solid var(--sep);background:var(--bg);font-size:15px;color:var(--t1);outline:none;font-family:inherit;margin-bottom:10px;transition:border-color .15s}
+.ev-field:focus{border-color:var(--blue)}
+.ev-field::placeholder{color:var(--t5)}
 
 /* ════════════ CALENDAR ════════════ */
 #s2{background:var(--bg)}
@@ -311,13 +327,15 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
 <div class="scr off" id="s1b" style="display:flex;flex-direction:column">
   <div class="c-top"><div class="c-bk" onclick="showChatList()"><svg viewBox="0 0 9 16"><path d="M8 1L1.5 8 8 15"/></svg>Chats</div><div class="c-mid"><div class="c-nm" id="ct">Chat</div><div class="c-sub">Claude Sonnet 4.5</div></div><div style="width:70px"></div></div>
   <div class="c-body" id="cm"><div class="c-time">Heute, 9:41</div></div>
-  <div class="c-in"><div class="c-row"><div class="c-ph">Nachricht…</div><button class="c-send"><svg viewBox="0 0 24 24"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg></button></div></div>
+  <div id="c-quick-wrap"></div>
+  <div class="c-in"><div class="c-row"><button class="c-attach" onclick="document.getElementById('file-picker').click()"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></button><input type="text" class="c-input" id="chat-input" placeholder="Nachricht..." autocomplete="off" onkeydown="if(event.key==='Enter')sendMessage()"><button class="c-send" id="send-btn" onclick="sendMessage()"><svg viewBox="0 0 24 24"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg></button></div></div>
+  <input type="file" id="file-picker" multiple style="display:none" onchange="handleFiles(this.files)">
 </div>
 
 <!-- ═══ S2: CALENDAR ═══ -->
 <div class="scr off" id="s2">
   <div class="pg-hdr"><div class="pg-t">Kalender</div></div>
-  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 22px 0"><span style="font-size:20px;font-weight:800;color:var(--t1)">März 2026</span><span style="font-size:14px;font-weight:600;color:var(--blue);cursor:pointer" onclick="openChat('meeting')">+ Neuer Termin</span></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 22px 0"><span style="font-size:20px;font-weight:800;color:var(--t1)">März 2026</span><span style="font-size:14px;font-weight:600;color:var(--blue);cursor:pointer" onclick="openEvModal()">+ Neuer Termin</span></div>
   <div class="cg" id="cal-grid"></div>
   <div class="ev-new"><div class="ev-badge">Von OpenClaw erstellt</div><div class="ev-title">PaTiLu Pizzaabend</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Sa, 14. März · 19:00 – 22:00</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="2"/></svg>Bei Luca</div><div class="ev-btns"><button class="ev-btn ev-p" onclick="this.textContent='Gespeichert';this.style.background='var(--green)'">Speichern</button><button class="ev-btn ev-s">Bearbeiten</button></div></div>
   <div id="cal-day-events">
@@ -376,6 +394,22 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
   </div>
 </div>
 
+<!-- ADD EVENT MODAL -->
+<div class="ev-modal" id="ev-modal" onclick="if(event.target===this)closeEvModal()">
+  <div class="ev-form">
+    <div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:4px;letter-spacing:-.3px">Neuer Termin</div>
+    <div style="font-size:13px;color:var(--t3);margin-bottom:16px;font-weight:500">Termin manuell hinzufuegen</div>
+    <input class="ev-field" id="ev-title" placeholder="Titel (z.B. Meeting)" autocomplete="off">
+    <input class="ev-field" id="ev-date" type="number" placeholder="Tag im Maerz (1-31)" min="1" max="31">
+    <input class="ev-field" id="ev-time" placeholder="Uhrzeit (z.B. 14:00 - 15:00)">
+    <select class="ev-field" id="ev-cal" style="appearance:auto"><option value="Privat">Privat</option><option value="Arbeit">Arbeit</option><option value="Schule">Schule</option><option value="Ausbildung">Ausbildung</option></select>
+    <div style="display:flex;gap:10px;margin-top:6px">
+      <button class="modal-btn modal-btn-s" style="flex:1" onclick="closeEvModal()">Abbrechen</button>
+      <button class="modal-btn modal-btn-p" style="flex:1" onclick="saveEvent()">Speichern</button>
+    </div>
+  </div>
+</div>
+
 <!-- INSTALL BANNER -->
 <div class="install-banner" id="install-banner">
   <div class="install-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14m0-14l-4 4m4-4l4 4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></div>
@@ -398,20 +432,70 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
 </div>
 
 <script>
+// ─── State ───
 let isDark=false;
-const SC={
-  files:{t:"Dateien sortieren",m:[{t:"u",x:"Sortiere alle Dokumente in meinem Download-Ordner"},{t:"p",n:"list_files",s:"47 Dateien gefunden",c:"var(--blue)",d:900},{t:"p",n:"read_file",s:"Analysiere scan_001.pdf…",c:"var(--blue)",d:1500},{t:"p",n:"create_folder",s:"Ordner: Rechnungen/",c:"var(--green)",d:2200},{t:"p",n:"move_file",s:"12 Dateien verschoben",c:"var(--purple)",d:2900},{t:"a",x:"Fertig! 47 Dateien in 6 Ordner sortiert:\n\nRechnungen — 12 Dateien\nVerträge — 5 Dateien\nBewerbungen — 3 Dateien\nFotos — 18 Dateien\nNotizen — 7 Dateien\nSonstige — 2 Dateien\n\nAlle nach Datum umbenannt.",d:3800}]},
-  photos:{t:"Fotos sortieren",m:[{t:"u",x:"Sortiere meine letzten 50 Fotos nach Ort"},{t:"p",n:"list_photos",s:"50 Fotos geladen",c:"var(--orange)",d:900},{t:"p",n:"analyze_photo",s:"1/50 — Paris, Eiffelturm",c:"var(--orange)",d:1700},{t:"p",n:"analyze_photo",s:"2/50 — Paris, Café",c:"var(--orange)",d:2100},{t:"p",n:"analyze_photo",s:"3/50 — unscharf",c:"var(--red)",d:2500},{t:"p",n:"create_album",s:"Album: Paris März 2026",c:"var(--green)",d:3200},{t:"a",x:"50 Fotos analysiert und sortiert!\n\nParis März 2026 — 23 Fotos\nStuttgart — 14 Fotos\nSchwarzwald — 8 Fotos\nSonstige — 2 Fotos\n\n3 unscharfe Fotos markiert.\nSoll ich sie löschen?",d:4000}]},
-  email:{t:"E-Mail vorbereiten",m:[{t:"u",x:"Schreib eine Krankmeldung an meinen Chef"},{t:"p",n:"read_clipboard",s:"Kontextdaten geladen",c:"var(--teal)",d:700},{t:"a",x:"Betreff: Krankmeldung\n\nSehr geehrter Herr [Name],\n\nhiermit melde ich mich für heute krank. Ich bin seit gestern stark erkältet.\n\nMit freundlichen Grüßen\nSemih",d:1800},{t:"p",n:"set_clipboard",s:"In Zwischenablage kopiert",c:"var(--green)",d:2700}]},
-  meeting:{t:"Termin erstellen",m:[{t:"u",x:"PaTiLu Pizzaabend, Samstag 19 Uhr bei Luca"},{t:"p",n:"read_calendar",s:"Kalender geladen",c:"var(--purple)",d:700},{t:"p",n:"check_conflicts",s:"Keine Konflikte",c:"var(--green)",d:1300},{t:"p",n:"create_event",s:"Event erstellt",c:"var(--purple)",d:1900},{t:"a",x:"Termin erstellt!\n\nSa, 14. März 2026\n19:00 – 22:00\nBei Luca\nKalender: PaTiLu\n\nSoll ich die Gruppe per WhatsApp einladen?",d:2600}]},
-  notes:{t:"Notizen zusammenfassen",m:[{t:"u",x:"Fasse meine letzten 3 Notizen zusammen"},{t:"p",n:"read_notes",s:"3 Notizen geladen",c:"var(--pink)",d:800},{t:"p",n:"write_file",s:"todos_kw11.md erstellt",c:"var(--green)",d:2000},{t:"a",x:"Zusammenfassung:\n\n1. Sprint Review — aptrainer Schema fertig\n2. BSZ Leonberg — 5 iPads enrollen\n3. AP1-Prep — Subnetting wiederholen\n\nTODO-Liste erstellt:\n• iPads BSZ Leonberg\n• Subnetting Klasse C\n• Questions-Tabelle befüllen\n• WiKu Zusammenfassung",d:2800}]},
-  clipboard:{t:"Clipboard verarbeiten",m:[{t:"u",x:"Lies meine Zwischenablage und fasse zusammen"},{t:"p",n:"read_clipboard",s:"2.847 Zeichen gelesen",c:"var(--teal)",d:700},{t:"a",x:"iOS-Sicherheitsarchitektur:\n\n• Sandbox isoliert jede App\n• Keychain nutzt Secure Enclave\n• Security-Scoped Bookmarks\n• App Transport Security\n\nSoll ich AP1-Lernkarten erstellen?",d:1900}]},
-  whatsapp:{t:"WhatsApp vorbereiten",m:[{t:"u",x:"Schreib Lilian dass ich später komme"},{t:"a",x:"Hey Schatz,\n\ndas Meeting zieht sich leider noch — bin erst gegen 19:30 da. Sorry!\n\nSoll ich was zum Essen mitbringen?",d:1100},{t:"p",n:"set_clipboard",s:"Kopiert — bereit zum Einfügen",c:"var(--green)",d:1900}]},
-  sms:{t:"SMS vorbereiten",m:[{t:"u",x:"SMS an Papa: Bitcoin-Update"},{t:"p",n:"read_clipboard",s:"Portfolio-Daten geladen",c:"var(--teal)",d:700},{t:"a",x:"Hi Papa! Kurzes BTC-Update:\n\nSparplan läuft planmäßig.\nPosition: +12,4%\nNächster Kauf: 15. März (100 €)\n\nAlles auf Kurs! LG",d:1500},{t:"p",n:"set_clipboard",s:"Kopiert",c:"var(--green)",d:2200}]}
+let savedKey=localStorage.getItem('lucien-apikey')||'';
+let currentModel=1; // 0=haiku 1=sonnet 2=opus
+const MODEL_IDS=['claude-haiku-4-5-20251001','claude-sonnet-4-5-20241022','claude-opus-4-5-20250414'];
+let chatMessages=[];
+let chatSystem='';
+let isTyping=false;
+let selectedFiles=[];
+
+// ─── Shortcut Configs (ask first!) ───
+const SHORTCUTS={
+  files:{
+    title:'Dateien sortieren',
+    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte Dateien sortieren. Frage konkret nach: Welche Dateien? Welcher Ordner? Wie sollen sie sortiert werden (nach Datum, Typ, Name)? Antworte auf Deutsch, kurz und hilfreich.',
+    greeting:'Welche Dateien moechtest du sortieren?\n\nBeschreib mir was du brauchst, z.B.:\n- "Sortiere meinen Download-Ordner nach Typ"\n- "Rechnungen in einen eigenen Ordner"\n\nOder waehle Dateien ueber das Clip-Symbol aus.',
+    quickActions:['Downloads aufraumen','Nach Dateityp sortieren','Duplikate finden']
+  },
+  photos:{
+    title:'Fotos sortieren',
+    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte Fotos sortieren/organisieren. Frage nach: Welche Fotos? Nach welchen Kriterien (Ort, Datum, Personen, Qualitaet)? Antworte auf Deutsch, kurz und hilfreich.',
+    greeting:'Welche Fotos soll ich sortieren?\n\nSag mir z.B.:\n- "Sortiere nach Ort"\n- "Finde unscharfe Fotos"\n- "Erstelle Alben nach Monat"\n\nOder waehle Fotos ueber das Clip-Symbol.',
+    quickActions:['Nach Ort sortieren','Unscharfe finden','Alben erstellen']
+  },
+  email:{
+    title:'E-Mail schreiben',
+    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte eine E-Mail vorbereiten. Frage nach: An wen? Welches Thema? Formell oder informell? Antworte auf Deutsch.',
+    greeting:'An wen soll die E-Mail gehen und worum geht es?\n\nZ.B.:\n- "Krankmeldung an meinen Chef"\n- "Bewerbung fuer ein Praktikum"\n- "Antwort auf eine Rechnung"',
+    quickActions:['Krankmeldung','Bewerbung','Formelle Anfrage']
+  },
+  meeting:{
+    title:'Termin erstellen',
+    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte einen Kalendertermin erstellen. Frage nach: Was fuer ein Termin? Wann (Datum + Uhrzeit)? Wo? Wer ist dabei? Antworte auf Deutsch.',
+    greeting:'Was fuer einen Termin moechtest du erstellen?\n\nSag mir:\n- Was? (z.B. "Pizzaabend")\n- Wann? (Datum + Uhrzeit)\n- Wo?\n- Mit wem?',
+    quickActions:['Meeting morgen','Arzttermin','Treffen am Wochenende']
+  },
+  notes:{
+    title:'Notizen zusammenfassen',
+    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte Notizen zusammenfassen oder verarbeiten. Frage nach: Welche Notizen? Was soll damit passieren (Zusammenfassung, TODO-Liste, Lernkarten)? Antworte auf Deutsch.',
+    greeting:'Welche Notizen soll ich bearbeiten?\n\nIch kann:\n- Notizen zusammenfassen\n- TODO-Listen erstellen\n- Lernkarten generieren\n\nBeschreib mir was du brauchst oder fuege Text ein.',
+    quickActions:['Zusammenfassen','TODO-Liste','Lernkarten']
+  },
+  clipboard:{
+    title:'Clipboard verarbeiten',
+    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte Text aus seiner Zwischenablage verarbeiten. Frage was damit passieren soll: Zusammenfassen, uebersetzen, umschreiben, analysieren? Antworte auf Deutsch.',
+    greeting:'Was soll ich mit dem Text machen?\n\nFuege deinen Text hier ein und sag mir:\n- "Fasse zusammen"\n- "Uebersetze auf Englisch"\n- "Schreib formeller um"\n- "Analysiere den Inhalt"',
+    quickActions:['Zusammenfassen','Uebersetzen','Umschreiben']
+  },
+  whatsapp:{
+    title:'WhatsApp vorbereiten',
+    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte eine WhatsApp-Nachricht vorbereiten. Frage nach: An wen? Was soll die Nachricht sagen? Welcher Ton (locker, formell)? Antworte auf Deutsch.',
+    greeting:'An wen soll die WhatsApp-Nachricht gehen?\n\nSag mir:\n- An wen?\n- Was willst du sagen?\n- Locker oder formell?',
+    quickActions:['Absage schreiben','Frage stellen','Glueckwuensche']
+  },
+  sms:{
+    title:'SMS vorbereiten',
+    system:'Du bist Lucien, ein iOS-Assistent. Der Nutzer moechte eine SMS vorbereiten. Frage nach: An wen? Was fuer eine Nachricht? Antworte auf Deutsch, kurz.',
+    greeting:'An wen geht die SMS und was soll drin stehen?',
+    quickActions:['Kurze Info','Erinnerung','Update']
+  }
 };
 
+// ─── Navigation ───
 const allScreens=['s0','s1','s1b','s2','s3','s4'];
-let cto=[];
 
 function hideAll(){allScreens.forEach(id=>{const e=document.getElementById(id);if(e){e.classList.add('off');if(id==='s1b')e.style.display='none'}})}
 
@@ -420,55 +504,140 @@ function show(id){
   const e=document.getElementById(id);
   e.classList.remove('off');
   if(id==='s1b')e.style.display='flex';
-  document.getElementById('clk').textContent=(id==='s1b')?'9:43':'9:41';
-  // Statusbar: white on home hero OR in dark mode, else dark
-  const onHome=(id==='s0');
-  document.getElementById('sbar').style.color=(onHome||isDark)?'#fff':'#1c1c1e';
+  const sbar=document.getElementById('sbar');
+  if(sbar){
+    document.getElementById('clk').textContent=(id==='s1b')?'9:43':'9:41';
+    const onHome=(id==='s0');
+    sbar.style.color=(onHome||isDark)?'#fff':'#1c1c1e';
+  }
 }
 
 function nav(i){
   document.querySelectorAll('#bn .ni').forEach((n,j)=>n.classList.toggle('on',j===i));
-  const map=[0,1,2,3,4];
-  const screenIds=['s0','s1','s2','s3','s4'];
-  show(screenIds[i]);
+  show(['s0','s1','s2','s3','s4'][i]);
 }
 
-function openChat(k){
-  const s=SC[k];if(!s)return;
-  document.getElementById('ct').textContent=s.t;
-  // Highlight chat tab
+// ─── Chat (interactive!) ───
+function openChat(key){
+  const s=SHORTCUTS[key];if(!s)return;
+  chatMessages=[];
+  chatSystem=s.system;
+  document.getElementById('ct').textContent=s.title;
   document.querySelectorAll('#bn .ni').forEach((n,j)=>n.classList.toggle('on',j===1));
   show('s1b');
-  runChat(s.m);
+
+  const cm=document.getElementById('cm');
+  const now=new Date();
+  cm.innerHTML='<div class="c-time">Heute, '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+'</div>';
+
+  // Show greeting from assistant
+  addBubble('assistant',s.greeting);
+  chatMessages.push({role:'assistant',content:s.greeting});
+
+  // Show quick action buttons
+  const qw=document.getElementById('c-quick-wrap');
+  if(s.quickActions&&s.quickActions.length){
+    qw.innerHTML='<div class="c-quick">'+s.quickActions.map(a=>'<button class="c-quick-btn" onclick="sendQuickAction(this,\''+a.replace(/'/g,"\\'")+'\')">'+a+'</button>').join('')+'</div>';
+  }else{qw.innerHTML=''}
+
+  // Focus input
+  setTimeout(()=>{const inp=document.getElementById('chat-input');if(inp)inp.focus()},300);
 }
 
 function showChatList(){
   document.querySelectorAll('#bn .ni').forEach((n,j)=>n.classList.toggle('on',j===1));
   show('s1');
-  cto.forEach(t=>clearTimeout(t));cto=[];
 }
 
-function runChat(msgs){
-  cto.forEach(t=>clearTimeout(t));cto=[];
-  const c=document.getElementById('cm');
-  c.innerHTML='<div class="c-time">Heute, 9:41</div>';
-  msgs.forEach((m,i)=>{
-    const d=m.d||(i*800);
-    cto.push(setTimeout(()=>{
-      c.querySelectorAll('.dots').forEach(d=>d.remove());
-      c.querySelectorAll('.tc:not(.dn)').forEach(p=>p.classList.add('dn'));
-      const el=document.createElement('div');el.className='fi';
-      if(m.t==='u'){el.className+=' bu';el.textContent=m.x}
-      else if(m.t==='p'){el.className+=' tc';el.innerHTML=`<div class="tc-bar" style="background:${m.c}"></div><div class="tc-in"><div class="tc-ic" style="background:${m.c}"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div style="flex:1;min-width:0"><div class="tc-n">${m.n}</div><div class="tc-s">${m.s}</div></div><div class="tc-live" style="background:${m.c};box-shadow:0 0 6px ${m.c}"></div><div class="tc-ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div></div>`}
-      else{el.className+=' ba';el.textContent=m.x}
-      c.appendChild(el);
-      if(i<msgs.length-1){const tp=document.createElement('div');tp.className='dots fi';tp.innerHTML='<span></span><span></span><span></span>';c.appendChild(tp)}
-      c.scrollTop=c.scrollHeight;
-    },d));
-  });
+function addBubble(role,text){
+  const cm=document.getElementById('cm');
+  const el=document.createElement('div');
+  el.className='fi '+(role==='user'?'bu':'ba');
+  el.textContent=text;
+  cm.appendChild(el);
+  cm.scrollTop=cm.scrollHeight;
 }
 
-function sm(i){document.querySelectorAll('#ms .rd').forEach(r=>r.classList.toggle('on',+r.dataset.i===i))}
+function showTyping(){
+  const cm=document.getElementById('cm');
+  const d=document.createElement('div');
+  d.className='dots fi';d.id='typing-dots';
+  d.innerHTML='<span></span><span></span><span></span>';
+  cm.appendChild(d);
+  cm.scrollTop=cm.scrollHeight;
+}
+function hideTyping(){const d=document.getElementById('typing-dots');if(d)d.remove()}
+
+function sendQuickAction(btn,text){
+  // Remove quick actions after use
+  document.getElementById('c-quick-wrap').innerHTML='';
+  document.getElementById('chat-input').value=text;
+  sendMessage();
+}
+
+async function sendMessage(){
+  const input=document.getElementById('chat-input');
+  const text=input.value.trim();
+  if(!text||isTyping)return;
+
+  addBubble('user',text);
+  chatMessages.push({role:'user',content:text});
+  input.value='';
+  document.getElementById('c-quick-wrap').innerHTML='';
+
+  if(!savedKey){
+    const msg='Bitte gib zuerst deinen Anthropic API Key in den Einstellungen ein.';
+    addBubble('assistant',msg);
+    chatMessages.push({role:'assistant',content:msg});
+    return;
+  }
+
+  isTyping=true;
+  showTyping();
+
+  try{
+    const res=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        apiKey:savedKey,
+        model:MODEL_IDS[currentModel],
+        system:chatSystem,
+        messages:chatMessages.filter(m=>m.role==='user'||m.role==='assistant')
+      })
+    });
+    const data=await res.json();
+    hideTyping();
+    isTyping=false;
+
+    if(data.content&&data.content[0]){
+      const reply=data.content[0].text;
+      addBubble('assistant',reply);
+      chatMessages.push({role:'assistant',content:reply});
+    }else if(data.error){
+      addBubble('assistant','Fehler: '+(data.error.message||JSON.stringify(data.error)));
+    }
+  }catch(e){
+    hideTyping();isTyping=false;
+    addBubble('assistant','Verbindungsfehler. Pruefe deine Internetverbindung.');
+  }
+}
+
+// ─── File Handling ───
+function handleFiles(fileList){
+  if(!fileList.length)return;
+  selectedFiles=Array.from(fileList);
+  const names=selectedFiles.map(f=>f.name).join(', ');
+  const input=document.getElementById('chat-input');
+  input.value='Ich habe diese Dateien ausgewaehlt: '+names;
+  input.focus();
+}
+
+// ─── Model Selection ───
+function sm(i){
+  currentModel=i;
+  document.querySelectorAll('#ms .rd').forEach(r=>r.classList.toggle('on',+r.dataset.i===i));
+}
 
 // ─── Dark Mode ───
 function toggleDark(){
@@ -479,13 +648,13 @@ function toggleDark(){
   document.getElementById('dm-label').textContent=isDark?'An':'Aus';
   document.body.style.background=isDark?'#000':'';
   document.querySelector('meta[name="theme-color"]').content=isDark?'#000':'#f2f2f7';
-  // Re-apply statusbar
   const onHome=!document.getElementById('s0').classList.contains('off');
-  document.getElementById('sbar').style.color=(onHome||isDark)?'#fff':'#1c1c1e';
+  const sbar=document.getElementById('sbar');
+  if(sbar)sbar.style.color=(onHome||isDark)?'#fff':'#1c1c1e';
+  localStorage.setItem('lucien-dark',isDark?'1':'0');
 }
 
 // ─── API Key Modal ───
-let savedKey='';
 function openApiModal(){
   document.getElementById('api-modal').classList.add('open');
   const inp=document.getElementById('api-input');
@@ -500,7 +669,8 @@ function saveApiKey(){
   if(!key){msg.textContent='Bitte gib einen API Key ein.';msg.style.background='rgba(255,59,48,.08)';msg.style.color='var(--red)';msg.classList.add('show');return}
   if(!key.startsWith('sk-ant-')){msg.textContent='Der Key muss mit "sk-ant-" beginnen.';msg.style.background='rgba(255,149,0,.08)';msg.style.color='var(--orange)';msg.classList.add('show');return}
   savedKey=key;
-  const masked='sk-ant-•••'+key.slice(-4);
+  localStorage.setItem('lucien-apikey',key);
+  const masked='sk-ant-...'+key.slice(-4);
   document.getElementById('api-status').textContent='Verbunden · '+masked;
   document.getElementById('api-status').style.color='var(--green)';
   msg.textContent='API Key gespeichert!';msg.style.background='rgba(52,199,89,.08)';msg.style.color='var(--green)';msg.classList.add('show');
@@ -508,37 +678,38 @@ function saveApiKey(){
 }
 
 // ─── Calendar ───
-const CAL_EVENTS={
-  3:[{t:'Berufsschule IT-Schule',time:'08:00 – 15:15',cal:'Schule',c:'var(--green)'}],
-  5:[{t:'Sprint Planning',time:'10:00 – 11:00',cal:'Arbeit',c:'var(--blue)'}],
-  9:[{t:'Zahnarzt Dr. Müller',time:'10:30 – 11:15',cal:'Privat',c:'var(--red)'},{t:'Team Meeting — Sprint Review',time:'14:00 – 15:00',cal:'Arbeit',c:'var(--blue)'},{t:'AP1 Lerngruppe',time:'17:00 – 19:00',cal:'Ausbildung',c:'var(--purple)'}],
-  10:[{t:'BSZ Leonberg — Vor-Ort',time:'08:00 – 16:00',cal:'indasys',c:'var(--orange)'}],
-  11:[{t:'Berufsschule IT-Schule',time:'08:00 – 15:15',cal:'Schule',c:'var(--green)'}],
-  14:[{t:'PaTiLu Pizzaabend',time:'19:00 – 22:00',cal:'PaTiLu',c:'var(--purple)'}],
-  18:[{t:'Wirtschaftskunde Klausur',time:'09:00 – 10:30',cal:'Schule',c:'var(--red)'},{t:'Lilian — Abendessen',time:'19:00',cal:'Privat',c:'var(--pink)'}],
+const CAL_COLORS={Privat:'var(--red)',Arbeit:'var(--blue)',Schule:'var(--green)',Ausbildung:'var(--purple)',indasys:'var(--orange)',PaTiLu:'var(--purple)'};
+const DEFAULT_EVENTS={
+  3:[{t:'Berufsschule IT-Schule',time:'08:00 - 15:15',cal:'Schule'}],
+  5:[{t:'Sprint Planning',time:'10:00 - 11:00',cal:'Arbeit'}],
+  9:[{t:'Zahnarzt Dr. Mueller',time:'10:30 - 11:15',cal:'Privat'},{t:'Team Meeting - Sprint Review',time:'14:00 - 15:00',cal:'Arbeit'},{t:'AP1 Lerngruppe',time:'17:00 - 19:00',cal:'Ausbildung'}],
+  10:[{t:'BSZ Leonberg - Vor-Ort',time:'08:00 - 16:00',cal:'indasys'}],
+  11:[{t:'Berufsschule IT-Schule',time:'08:00 - 15:15',cal:'Schule'}],
+  14:[{t:'PaTiLu Pizzaabend',time:'19:00 - 22:00',cal:'PaTiLu'}],
+  18:[{t:'Wirtschaftskunde Klausur',time:'09:00 - 10:30',cal:'Schule'},{t:'Lilian - Abendessen',time:'19:00',cal:'Privat'}]
 };
+let calEvents=JSON.parse(localStorage.getItem('lucien-cal')||'null')||JSON.parse(JSON.stringify(DEFAULT_EVENTS));
 const WDAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
 let selectedDay=9;
 
+function getEvColor(cal){return CAL_COLORS[cal]||'var(--blue)'}
+
+function saveCalEvents(){localStorage.setItem('lucien-cal',JSON.stringify(calEvents))}
+
 function buildCalendar(){
-  const g=document.getElementById('cal-grid');
-  g.innerHTML='';
+  const g=document.getElementById('cal-grid');g.innerHTML='';
   WDAYS.forEach(d=>{const el=document.createElement('div');el.className='cdn';el.textContent=d;g.appendChild(el)});
-  // Feb overflow (Mon 23 Feb)
   for(let d=23;d<=28;d++){const el=document.createElement('div');el.className='cd ot';el.textContent=d;g.appendChild(el)}
-  // March 1-31
   for(let d=1;d<=31;d++){
     const el=document.createElement('div');
     let cls='cd';
     if(d===9)cls+=' td';
-    if(CAL_EVENTS[d])cls+=' ev';
+    if(calEvents[d])cls+=' ev';
     if(d===selectedDay&&d!==9)cls+=' sel';
-    el.className=cls;
-    el.textContent=d;
+    el.className=cls;el.textContent=d;
     el.onclick=()=>selectDay(d);
     g.appendChild(el);
   }
-  // April overflow
   for(let d=1;d<=5;d++){const el=document.createElement('div');el.className='cd ot';el.textContent=d;g.appendChild(el)}
   showDayEvents(selectedDay);
 }
@@ -557,63 +728,100 @@ function showDayEvents(d){
   const titleEl=document.getElementById('cal-day-title');
   const listEl=document.getElementById('cal-ev-list');
   const days=['So','Mo','Di','Mi','Do','Fr','Sa'];
-  // March 2026: March 1 is Sunday (index 0), so day d => dayOfWeek
   const dow=new Date(2026,2,d).getDay();
-  const dayName=days[dow];
-  titleEl.textContent=(d===9?'Heute — ':'')+dayName+', '+d+'. März';
-  const events=CAL_EVENTS[d];
-  if(!events||events.length===0){
+  titleEl.textContent=(d===9?'Heute - ':'')+days[dow]+', '+d+'. Maerz';
+  const events=calEvents[d];
+  if(!events||!events.length){
     listEl.innerHTML='<div style="padding:12px 0;font-size:14px;color:var(--t3)">Keine Termine an diesem Tag</div>';
     return;
   }
-  listEl.innerHTML=events.map(e=>`<div class="evc"><div class="evb" style="background:${e.c}"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">${e.t}</div><div style="font-size:12.5px;color:var(--t2);margin-top:2px">${e.time}</div><div style="font-size:11px;font-weight:700;color:${e.c};margin-top:3px">${e.cal}</div></div></div>`).join('');
+  listEl.innerHTML=events.map(e=>{
+    const c=getEvColor(e.cal);
+    return '<div class="evc"><div class="evb" style="background:'+c+'"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">'+e.t+'</div><div style="font-size:12.5px;color:var(--t2);margin-top:2px">'+e.time+'</div><div style="font-size:11px;font-weight:700;color:'+c+';margin-top:3px">'+e.cal+'</div></div></div>';
+  }).join('');
 }
+
+// ─── Add Event Modal ───
+function openEvModal(){document.getElementById('ev-modal').classList.add('open');document.getElementById('ev-title').value='';document.getElementById('ev-date').value=selectedDay;document.getElementById('ev-time').value='';setTimeout(()=>document.getElementById('ev-title').focus(),200)}
+function closeEvModal(){document.getElementById('ev-modal').classList.remove('open')}
+function saveEvent(){
+  const t=document.getElementById('ev-title').value.trim();
+  const d=parseInt(document.getElementById('ev-date').value);
+  const time=document.getElementById('ev-time').value.trim()||'Ganztaegig';
+  const cal=document.getElementById('ev-cal').value;
+  if(!t){alert('Bitte Titel eingeben');return}
+  if(!d||d<1||d>31){alert('Bitte gueltigen Tag eingeben (1-31)');return}
+  if(!calEvents[d])calEvents[d]=[];
+  calEvents[d].push({t,time,cal});
+  saveCalEvents();
+  buildCalendar();
+  selectDay(d);
+  closeEvModal();
+}
+
+// ─── Permission Toggles ───
+document.querySelectorAll('#s4 .tg').forEach(tg=>{
+  if(tg.id==='dm-toggle')return;
+  tg.addEventListener('click',function(){
+    const isOn=this.classList.contains('on');
+    if(!isOn){
+      // Turning on - simulate permission request
+      const label=this.closest('.sr').querySelector('div[style*="font-size:15px"]');
+      const name=label?label.textContent:'';
+      if(name==='Kontakte'){
+        // Can't access contacts on web
+        const sub=this.closest('.sr').querySelector('div[style*="margin-top:1px"]');
+        if(sub){sub.textContent='Nur in nativer App';sub.style.color='var(--orange)'}
+        return;
+      }
+    }
+    this.classList.toggle('on');this.classList.toggle('off');
+  });
+});
 
 // ─── Install Banner ───
 let deferredPrompt=null;
 const isStandalone=window.matchMedia('(display-mode:standalone)').matches||window.navigator.standalone;
 const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-const isAndroid=/Android/.test(navigator.userAgent);
 
 function showInstallBanner(){
   if(isStandalone||sessionStorage.getItem('install-dismissed'))return;
   const banner=document.getElementById('install-banner');
   const hint=document.getElementById('install-hint');
   const btn=document.getElementById('install-action');
-  if(isIOS){
-    hint.textContent='Teilen > Zum Home-Bildschirm';
-    btn.textContent='So geht\'s';
-  }else if(deferredPrompt){
-    hint.textContent='Als App installieren';
-    btn.textContent='Installieren';
-  }else{
-    hint.textContent='Zum Homescreen hinzufuegen';
-    btn.textContent='Anleitung';
-  }
+  if(isIOS){hint.textContent='Teilen > Zum Home-Bildschirm';btn.textContent='So geht\'s'}
+  else if(deferredPrompt){hint.textContent='Als App installieren';btn.textContent='Installieren'}
+  else{hint.textContent='Zum Homescreen hinzufuegen';btn.textContent='Anleitung'}
   banner.classList.add('show');
 }
 function handleInstall(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(()=>{deferredPrompt=null;dismissInstall()});
-  }else if(isIOS){
-    alert('1. Tippe unten auf das Teilen-Symbol (Quadrat mit Pfeil)\n2. Scrolle runter\n3. Tippe auf "Zum Home-Bildschirm"\n4. Tippe auf "Hinzufuegen"');
-  }else{
-    alert('Oeffne das Browser-Menue (drei Punkte) und waehle "Zum Startbildschirm hinzufuegen" oder "App installieren".');
-  }
+  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;dismissInstall()})}
+  else if(isIOS){alert('1. Tippe auf das Teilen-Symbol (Quadrat mit Pfeil)\n2. Scrolle runter\n3. "Zum Home-Bildschirm"\n4. "Hinzufuegen"')}
+  else{alert('Browser-Menue > "Zum Startbildschirm hinzufuegen" oder "App installieren"')}
 }
-function dismissInstall(){
-  document.getElementById('install-banner').classList.remove('show');
-  sessionStorage.setItem('install-dismissed','1');
-}
+function dismissInstall(){document.getElementById('install-banner').classList.remove('show');sessionStorage.setItem('install-dismissed','1')}
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;showInstallBanner()});
 
-// Init
-document.getElementById('sbar').style.color='#fff';
-document.getElementById('api-status').style.color='var(--t4)';
-buildCalendar();
-// Show install banner on mobile after short delay
-if(window.innerWidth<=500)setTimeout(showInstallBanner,1500);
+// ─── Init ───
+(function(){
+  const sbar=document.getElementById('sbar');
+  if(sbar)sbar.style.color='#fff';
+
+  // Restore API key display
+  if(savedKey){
+    const s=document.getElementById('api-status');
+    s.textContent='Verbunden · sk-ant-...'+savedKey.slice(-4);
+    s.style.color='var(--green)';
+  }else{
+    document.getElementById('api-status').style.color='var(--t4)';
+  }
+
+  // Restore dark mode
+  if(localStorage.getItem('lucien-dark')==='1')toggleDark();
+
+  buildCalendar();
+  if(window.innerWidth<=500)setTimeout(showInstallBanner,1500);
+})();
 </script>
 </body>
 </html>
