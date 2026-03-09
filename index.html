@@ -404,6 +404,83 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 .login-g-btn svg{width:20px;height:20px;flex-shrink:0}
 .login-info{margin-top:24px;font-size:12px;color:rgba(255,255,255,.3);text-align:center;max-width:250px;line-height:1.5}
 
+/* ════════════ GMAIL INBOX ════════════ */
+.gmail-toolbar{display:flex;justify-content:space-between;align-items:center;padding:0 22px 10px}
+.gmail-toolbar-btn{padding:8px 16px;border-radius:10px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.1s}
+.gmail-toolbar-btn:active{transform:scale(.96)}
+.gmail-compose-btn{background:var(--blue);color:#fff}
+.gmail-refresh-btn{background:var(--search-bg);color:var(--t2)}
+.gmail-list{margin:0 20px}
+.gmail-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);cursor:pointer;transition:.1s}
+.gmail-item:first-child{border-radius:16px 16px 0 0}
+.gmail-item:last-child{border-radius:0 0 16px 16px}
+.gmail-item:only-child{border-radius:16px}
+.gmail-item:active{background:#f5f5f7}
+.gmail-item+.gmail-item{border-top:.5px solid var(--sep)}
+.dark .gmail-item{background:var(--card)}
+.dark .gmail-item:active{background:var(--t6)}
+.gmail-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;background:linear-gradient(140deg,#007aff,#5856d6)}
+.gmail-txt{flex:1;min-width:0}
+.gmail-from{font-size:15px;font-weight:700;letter-spacing:-.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gmail-subj{font-size:13.5px;font-weight:600;color:var(--t2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gmail-snip{font-size:12.5px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.gmail-meta{text-align:right;flex-shrink:0}
+.gmail-date{font-size:11px;color:var(--t4);font-weight:500}
+.gmail-unread .gmail-from{color:var(--t1)}
+.gmail-unread .gmail-subj{color:var(--t1)}
+.gmail-loading{text-align:center;padding:40px 0;color:var(--t3);font-size:14px;font-weight:500}
+.gmail-empty{text-align:center;padding:40px 0;color:var(--t4);font-size:14px}
+
+/* Gmail Detail View */
+.gmail-detail{margin:0 20px}
+.gmail-detail-card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 .5px 2px rgba(0,0,0,.03)}
+.gmail-detail-subj{font-size:20px;font-weight:800;letter-spacing:-.3px;margin-bottom:12px;line-height:1.3}
+.gmail-detail-meta{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:.5px solid var(--sep)}
+.gmail-detail-from{font-size:15px;font-weight:700}
+.gmail-detail-date{font-size:12px;color:var(--t3);margin-top:2px;font-weight:500}
+.gmail-detail-body{font-size:14.5px;color:var(--t2);line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:400px;overflow-y:auto}
+.gmail-detail-actions{display:flex;gap:10px;margin-top:16px}
+
+/* Gmail Compose */
+.gmail-compose{margin:0 20px}
+.gmail-compose-card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 .5px 2px rgba(0,0,0,.03)}
+.gmail-compose-title{font-size:20px;font-weight:800;letter-spacing:-.3px;margin-bottom:16px}
+.gmail-field{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid var(--sep);background:var(--bg);font-size:15px;color:var(--t1);outline:none;font-family:inherit;margin-bottom:10px;transition:border-color .15s}
+.gmail-field:focus{border-color:var(--blue)}
+.gmail-field::placeholder{color:var(--t5)}
+.gmail-body-field{width:100%;min-height:200px;padding:14px 16px;border-radius:12px;border:1.5px solid var(--sep);background:var(--bg);font-size:15px;color:var(--t1);outline:none;font-family:inherit;resize:vertical;line-height:1.6;margin-bottom:10px}
+.gmail-body-field:focus{border-color:var(--blue)}
+.gmail-body-field::placeholder{color:var(--t5)}
+.gmail-compose-status{margin-top:8px;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;display:none}
+.gmail-compose-status.show{display:block}
+
+/* ════════════ CONTACTS TOOL ════════════ */
+.contacts-search{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid var(--sep);background:var(--bg);font-size:15px;color:var(--t1);outline:none;font-family:inherit;margin-bottom:14px;transition:border-color .15s}
+.contacts-search:focus{border-color:var(--blue)}
+.contacts-search::placeholder{color:var(--t5)}
+.contacts-list{display:flex;flex-direction:column;gap:0}
+.contact-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--card);cursor:pointer;transition:.1s}
+.contact-item:first-child{border-radius:16px 16px 0 0}
+.contact-item:last-child{border-radius:0 0 16px 16px}
+.contact-item:only-child{border-radius:16px}
+.contact-item:active{background:#f5f5f7}
+.contact-item+.contact-item{border-top:.5px solid var(--sep)}
+.dark .contact-item{background:var(--card)}
+.dark .contact-item:active{background:var(--t6)}
+.contact-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;background:linear-gradient(140deg,#32ade6,#007aff)}
+.contact-info{flex:1;min-width:0}
+.contact-name{font-size:15px;font-weight:700}
+.contact-detail{font-size:12.5px;color:var(--t3);margin-top:2px;font-weight:500}
+.contact-actions{display:flex;gap:6px}
+.contact-act-btn{width:32px;height:32px;border-radius:8px;background:var(--search-bg);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.contact-act-btn svg{width:14px;height:14px;fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.contact-act-btn:active{background:rgba(0,122,255,.1)}
+
+/* Calendar delete button */
+.ev-del-btn{width:28px;height:28px;border-radius:8px;background:rgba(255,59,48,.08);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.1s}
+.ev-del-btn:active{background:rgba(255,59,48,.15);transform:scale(.9)}
+.ev-del-btn svg{width:14px;height:14px;fill:none;stroke:var(--red);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
 @media(max-width:500px){
   .tool-panel{top:env(safe-area-inset-top,47px);bottom:calc(56px + env(safe-area-inset-bottom,34px))}
   .msg-actions{opacity:1}
@@ -468,6 +545,7 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
     <div class="h-card" onclick="openTool('timer')"><div class="h-card-glow" style="color:var(--indigo)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#5856d6,#af52de)"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="9"/><path d="M12 9v4l3 3M10 2h4"/></svg></div><div class="h-card-t">Timer</div><div class="h-card-s">Stoppuhr & Timer</div></div>
     <div class="h-card" onclick="openTool('converter')"><div class="h-card-glow" style="color:var(--teal)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#32ade6,#007aff)"><svg viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></div><div class="h-card-t">Einheiten</div><div class="h-card-s">Umrechner</div></div>
     <div class="h-card" onclick="openTool('texttools')"><div class="h-card-glow" style="color:var(--purple)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#af52de,#5856d6)"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></div><div class="h-card-t">Text Tools</div><div class="h-card-s">Analyse & Umwandlung</div></div>
+    <div class="h-card" onclick="openTool('contacts')"><div class="h-card-glow" style="color:var(--teal)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#32ade6,#007aff)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div class="h-card-t">Kontakte</div><div class="h-card-s">Google Kontakte</div></div>
   </div>
   <div class="h-sec">Verlauf</div>
   <div class="h-time">
@@ -512,13 +590,50 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 
 <!-- ═══ S3: MESSAGES ═══ -->
 <div class="scr off" id="s3">
-  <div class="pg-hdr"><div class="pg-t">Nachrichten</div><div class="pg-s">Texte vorbereiten & versenden</div></div>
-  <div class="h-sec">Schnellstart</div>
-  <div class="h-grid" style="margin-bottom:8px">
-    <div class="h-card" onclick="openChat('email')"><div class="h-card-glow" style="color:var(--blue)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#007aff,#5856d6)"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="h-card-t">E-Mail</div><div class="h-card-s">Formell & professionell</div></div>
-    <div class="h-card" onclick="openChat('whatsapp')"><div class="h-card-glow" style="color:var(--green)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#25d366,#128c7e)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="h-card-t">WhatsApp</div><div class="h-card-s">Locker & direkt</div></div>
-    <div class="h-card" onclick="openChat('sms')"><div class="h-card-glow" style="color:var(--teal)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#32ade6,#007aff)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg></div><div class="h-card-t">SMS / iMessage</div><div class="h-card-s">Kurz & knapp</div></div>
-    <div class="h-card" onclick="openChat('clipboard')"><div class="h-card-glow" style="color:var(--purple)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#af52de,#5856d6)"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div><div class="h-card-t">Text bearbeiten</div><div class="h-card-s">Umschreiben & uebersetzen</div></div>
+  <div class="pg-hdr"><div class="pg-t">Nachrichten</div><div class="pg-s" id="s3-sub">Texte vorbereiten & versenden</div></div>
+  <!-- Gmail Inbox (shown when connected) -->
+  <div id="gmail-inbox-wrap" style="display:none">
+    <div class="gmail-toolbar">
+      <button class="gmail-toolbar-btn gmail-compose-btn" onclick="gmailShowCompose()">+ Neue Mail</button>
+      <button class="gmail-toolbar-btn gmail-refresh-btn" onclick="gmailLoadInbox()">Aktualisieren</button>
+    </div>
+    <div id="gmail-inbox-list" class="gmail-list"></div>
+    <div style="height:12px"></div>
+    <div class="h-sec">Schnellstart</div>
+  </div>
+  <!-- Gmail Detail View -->
+  <div id="gmail-detail-wrap" style="display:none">
+    <div style="padding:0 22px 12px"><button style="background:none;border:none;color:var(--blue);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit" onclick="gmailBackToInbox()">← Posteingang</button></div>
+    <div class="gmail-detail" id="gmail-detail-content"></div>
+    <div style="height:20px"></div>
+  </div>
+  <!-- Gmail Compose View -->
+  <div id="gmail-compose-wrap" style="display:none">
+    <div style="padding:0 22px 12px"><button style="background:none;border:none;color:var(--blue);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit" onclick="gmailBackFromCompose()">← Zurueck</button></div>
+    <div class="gmail-compose">
+      <div class="gmail-compose-card">
+        <div class="gmail-compose-title">Neue E-Mail</div>
+        <input class="gmail-field" id="gmail-to" type="email" placeholder="An (E-Mail-Adresse)" autocomplete="off">
+        <input class="gmail-field" id="gmail-subject" placeholder="Betreff" autocomplete="off">
+        <textarea class="gmail-body-field" id="gmail-body" placeholder="Nachricht schreiben..."></textarea>
+        <div class="gmail-compose-status" id="gmail-send-status"></div>
+        <div style="display:flex;gap:10px;margin-top:6px">
+          <button class="modal-btn modal-btn-s" style="flex:1" onclick="gmailBackFromCompose()">Abbrechen</button>
+          <button class="modal-btn modal-btn-p" style="flex:1" onclick="gmailSendEmail()">Senden</button>
+        </div>
+      </div>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+  <!-- Fallback: Original template cards -->
+  <div id="s3-fallback">
+    <div class="h-sec">Schnellstart</div>
+    <div class="h-grid" style="margin-bottom:8px">
+      <div class="h-card" onclick="openChat('email')"><div class="h-card-glow" style="color:var(--blue)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#007aff,#5856d6)"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="h-card-t">E-Mail</div><div class="h-card-s">Formell & professionell</div></div>
+      <div class="h-card" onclick="openChat('whatsapp')"><div class="h-card-glow" style="color:var(--green)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#25d366,#128c7e)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="h-card-t">WhatsApp</div><div class="h-card-s">Locker & direkt</div></div>
+      <div class="h-card" onclick="openChat('sms')"><div class="h-card-glow" style="color:var(--teal)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#32ade6,#007aff)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg></div><div class="h-card-t">SMS / iMessage</div><div class="h-card-s">Kurz & knapp</div></div>
+      <div class="h-card" onclick="openChat('clipboard')"><div class="h-card-glow" style="color:var(--purple)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#af52de,#5856d6)"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div><div class="h-card-t">Text bearbeiten</div><div class="h-card-s">Umschreiben & uebersetzen</div></div>
+    </div>
   </div>
   <div class="h-sec">Vorlagen</div>
   <div style="margin:0 20px">
@@ -742,6 +857,7 @@ function nav(i){
   closeTool();
   document.querySelectorAll('#bn .ni').forEach((n,j)=>n.classList.toggle('on',j===i));
   show(['s0','s1','s2','s3','s4'][i]);
+  if(i===3)gmailInitTab();
 }
 
 // ─── Chat (interactive!) ───
@@ -1117,9 +1233,16 @@ function showDayEvents(d){
   const today=new Date();const isToday=(calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate());
   titleEl.textContent=(isToday?'Heute — ':'')+days[dow]+', '+d+'. '+MONTHS_SHORT[calMonth];
   const local=getMonthEvents(calYear,calMonth)[d]||[];const gcal=getGcalDayEvents(calYear,calMonth)[d]||[];
+  const localCount=local.length;
   const events=[...local,...gcal];
   if(!events.length){listEl.innerHTML='<div style="padding:12px 0;font-size:14px;color:var(--t3)">Keine Termine</div>';return;}
-  listEl.innerHTML=events.map(e=>{const c=getEvColor(e.cal||'Sonstig');return '<div class="evc"><div class="evb" style="background:'+c+'"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">'+escH(e.t)+'</div><div style="font-size:12.5px;color:var(--t2);margin-top:2px">'+escH(e.time)+'</div><div style="font-size:11px;font-weight:700;color:'+c+';margin-top:3px">'+escH(e.cal||'')+'</div></div></div>';}).join('');
+  listEl.innerHTML=events.map((e,i)=>{const c=getEvColor(e.cal||'Sonstig');const isLocal=i<localCount;return '<div class="evc"><div class="evb" style="background:'+c+'"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">'+escH(e.t)+'</div><div style="font-size:12.5px;color:var(--t2);margin-top:2px">'+escH(e.time)+'</div><div style="font-size:11px;font-weight:700;color:'+c+';margin-top:3px">'+escH(e.cal||'')+'</div></div>'+(isLocal?'<button class="ev-del-btn" onclick="deleteLocalEvent('+d+','+i+')" title="Loeschen"><svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>':'')+'</div>';}).join('');
+}
+
+function deleteLocalEvent(day,idx){
+  if(!confirm('Termin loeschen?'))return;
+  const ev=getMonthEvents(calYear,calMonth);
+  if(ev[day]&&ev[day][idx]!==undefined){ev[day].splice(idx,1);if(!ev[day].length)delete ev[day];saveMonthEvents(calYear,calMonth,ev);buildCalendar();updateHeroEvents();}
 }
 
 // ─── Add Event Modal ───
@@ -1349,11 +1472,11 @@ function toggleVoice(){
 function stopVoice(){isRecording=false;document.getElementById('voice-btn').classList.remove('recording');if(recognition)try{recognition.stop();}catch(e){}}
 
 // ─── Tool Panel ───
-const TOOL_NAMES={calc:'Rechner',notes:'Notizen',todo:'Aufgaben',timer:'Timer',converter:'Einheiten',texttools:'Text Tools'};
+const TOOL_NAMES={calc:'Rechner',notes:'Notizen',todo:'Aufgaben',timer:'Timer',converter:'Einheiten',texttools:'Text Tools',contacts:'Kontakte'};
 function openTool(id){
   document.getElementById('tool-title').textContent=TOOL_NAMES[id]||'Tool';
   document.getElementById('tool-body').innerHTML='';
-  ({calc:renderCalc,notes:renderNotes,todo:renderTodo,timer:renderTimer,converter:renderConverter,texttools:renderTextTools})[id]();
+  ({calc:renderCalc,notes:renderNotes,todo:renderTodo,timer:renderTimer,converter:renderConverter,texttools:renderTextTools,contacts:renderContacts})[id]();
   document.getElementById('tool-panel').classList.add('open');
 }
 function closeTool(){document.getElementById('tool-panel').classList.remove('open');if(timerInterval&&!timerRunning){/* keep timer */}}
@@ -1497,7 +1620,7 @@ function connectGcal(){
   try{
     const client=google.accounts.oauth2.initTokenClient({
       client_id:id,
-      scope:'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events',
+      scope:'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/contacts.readonly',
       callback:(resp)=>{
         if(resp.error){msg.textContent='Fehler: '+resp.error;msg.style.background='rgba(255,59,48,.08)';msg.style.color='var(--red)';msg.style.display='block';msg.classList.add('show');return;}
         gcalToken=resp.access_token;gcalTokenExpiry=Date.now()+(resp.expires_in*1000);
@@ -1631,6 +1754,280 @@ function loadChat(i){
   document.getElementById('c-quick-wrap').innerHTML='';
 }
 function deleteChat(i){chatHistory.splice(i,1);localStorage.setItem('lucien-chats',JSON.stringify(chatHistory));renderChatList();}
+
+// ─── Base64URL Encoding ───
+function base64urlEncode(str){
+  const utf8=new TextEncoder().encode(str);
+  let binary='';for(let i=0;i<utf8.length;i++)binary+=String.fromCharCode(utf8[i]);
+  return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+// ─── Gmail Token Check ───
+function gmailTokenValid(){return gcalToken&&Date.now()<gcalTokenExpiry;}
+
+// ─── Gmail: Initialize Messages Tab ───
+let gmailCurrentView='inbox'; // inbox, detail, compose
+let gmailMessages=[];
+let gmailCurrentEmail=null;
+
+function gmailInitTab(){
+  const inboxWrap=document.getElementById('gmail-inbox-wrap');
+  const detailWrap=document.getElementById('gmail-detail-wrap');
+  const composeWrap=document.getElementById('gmail-compose-wrap');
+  const fallback=document.getElementById('s3-fallback');
+  const sub=document.getElementById('s3-sub');
+  if(gmailTokenValid()){
+    inboxWrap.style.display='';detailWrap.style.display='none';composeWrap.style.display='none';fallback.style.display='none';
+    if(sub)sub.textContent='Gmail Posteingang';
+    gmailCurrentView='inbox';
+    gmailLoadInbox();
+  }else{
+    inboxWrap.style.display='none';detailWrap.style.display='none';composeWrap.style.display='none';fallback.style.display='';
+    if(sub)sub.textContent='Texte vorbereiten & versenden';
+  }
+}
+
+// ─── Gmail: Load Inbox ───
+async function gmailLoadInbox(){
+  if(!gmailTokenValid()){showSyncToast('Google nicht verbunden — bitte neu anmelden',false);return;}
+  const listEl=document.getElementById('gmail-inbox-list');
+  listEl.innerHTML='<div class="gmail-loading">Posteingang laden...</div>';
+  try{
+    const r=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=15',{headers:{'Authorization':'Bearer '+gcalToken}});
+    if(!r.ok){if(r.status===401){gcalToken='';localStorage.removeItem('lucien-gcal-token');gmailInitTab();}listEl.innerHTML='<div class="gmail-empty">Fehler beim Laden ('+r.status+')</div>';return;}
+    const data=await r.json();
+    if(!data.messages||!data.messages.length){listEl.innerHTML='<div class="gmail-empty">Posteingang leer</div>';return;}
+    // Fetch metadata for each message
+    const details=await Promise.all(data.messages.map(m=>
+      fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/'+m.id+'?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date',{headers:{'Authorization':'Bearer '+gcalToken}}).then(r=>r.json())
+    ));
+    gmailMessages=details;
+    renderGmailList(details);
+  }catch(e){listEl.innerHTML='<div class="gmail-empty">Verbindungsfehler</div>';}
+}
+
+function renderGmailList(messages){
+  const listEl=document.getElementById('gmail-inbox-list');
+  if(!messages.length){listEl.innerHTML='<div class="gmail-empty">Keine E-Mails</div>';return;}
+  const colors=['#007aff','#34c759','#ff9500','#af52de','#ff3b30','#5856d6','#32ade6','#ff2d55'];
+  listEl.innerHTML=messages.map((m,i)=>{
+    const headers=m.payload?.headers||[];
+    const from=headers.find(h=>h.name==='From')?.value||'Unbekannt';
+    const subject=headers.find(h=>h.name==='Subject')?.value||'(Kein Betreff)';
+    const dateRaw=headers.find(h=>h.name==='Date')?.value||'';
+    const snippet=m.snippet||'';
+    const isUnread=(m.labelIds||[]).includes('UNREAD');
+    // Parse from to get name only
+    const fromName=from.replace(/<[^>]+>/,'').trim().replace(/^"|"$/g,'');
+    const initial=fromName.charAt(0).toUpperCase();
+    const color=colors[i%colors.length];
+    // Format date
+    let dateStr='';
+    try{const d=new Date(dateRaw);const now=new Date();if(d.toDateString()===now.toDateString()){dateStr=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}else{dateStr=d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.';}}catch(e){dateStr='';}
+    return '<div class="gmail-item'+(isUnread?' gmail-unread':'')+'" onclick="gmailOpenEmail(\''+m.id+'\')"><div class="gmail-av" style="background:'+color+'">'+escH(initial)+'</div><div class="gmail-txt"><div class="gmail-from">'+escH(fromName)+'</div><div class="gmail-subj">'+escH(subject)+'</div><div class="gmail-snip">'+escH(snippet)+'</div></div><div class="gmail-meta"><div class="gmail-date">'+escH(dateStr)+'</div></div></div>';
+  }).join('');
+}
+
+// ─── Gmail: Open Email Detail ───
+async function gmailOpenEmail(msgId){
+  if(!gmailTokenValid()){showSyncToast('Google nicht verbunden',false);return;}
+  const inboxWrap=document.getElementById('gmail-inbox-wrap');
+  const detailWrap=document.getElementById('gmail-detail-wrap');
+  const composeWrap=document.getElementById('gmail-compose-wrap');
+  const fallback=document.getElementById('s3-fallback');
+  inboxWrap.style.display='none';detailWrap.style.display='';composeWrap.style.display='none';fallback.style.display='none';
+  // Hide templates section too
+  const contentEl=document.getElementById('gmail-detail-content');
+  contentEl.innerHTML='<div class="gmail-loading">E-Mail laden...</div>';
+  gmailCurrentView='detail';
+  try{
+    const r=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/'+msgId+'?format=full',{headers:{'Authorization':'Bearer '+gcalToken}});
+    if(!r.ok){contentEl.innerHTML='<div class="gmail-empty">Fehler beim Laden</div>';return;}
+    const msg=await r.json();
+    gmailCurrentEmail=msg;
+    renderGmailDetail(msg);
+  }catch(e){contentEl.innerHTML='<div class="gmail-empty">Verbindungsfehler</div>';}
+}
+
+function gmailExtractBody(payload){
+  // Try to find text/plain part
+  if(payload.mimeType==='text/plain'&&payload.body?.data){
+    return gmailDecodeBase64(payload.body.data);
+  }
+  if(payload.parts){
+    // First try text/plain
+    for(const part of payload.parts){
+      if(part.mimeType==='text/plain'&&part.body?.data){return gmailDecodeBase64(part.body.data);}
+    }
+    // Then try text/html and strip tags
+    for(const part of payload.parts){
+      if(part.mimeType==='text/html'&&part.body?.data){
+        const html=gmailDecodeBase64(part.body.data);
+        const tmp=document.createElement('div');tmp.innerHTML=html;return tmp.textContent||tmp.innerText||'';
+      }
+    }
+    // Recurse into multipart
+    for(const part of payload.parts){
+      if(part.parts){const r=gmailExtractBody(part);if(r)return r;}
+    }
+  }
+  if(payload.body?.data){return gmailDecodeBase64(payload.body.data);}
+  return '(Kein Textinhalt)';
+}
+
+function gmailDecodeBase64(data){
+  try{const fixed=data.replace(/-/g,'+').replace(/_/g,'/');return decodeURIComponent(escape(atob(fixed)));}catch(e){try{return atob(data.replace(/-/g,'+').replace(/_/g,'/'));}catch(e2){return '(Dekodierung fehlgeschlagen)';}}
+}
+
+function renderGmailDetail(msg){
+  const contentEl=document.getElementById('gmail-detail-content');
+  const headers=msg.payload?.headers||[];
+  const from=headers.find(h=>h.name==='From')?.value||'Unbekannt';
+  const subject=headers.find(h=>h.name==='Subject')?.value||'(Kein Betreff)';
+  const dateRaw=headers.find(h=>h.name==='Date')?.value||'';
+  const to=headers.find(h=>h.name==='To')?.value||'';
+  const fromName=from.replace(/<[^>]+>/,'').trim().replace(/^"|"$/g,'');
+  const fromEmail=(from.match(/<([^>]+)>/)||[])[1]||from;
+  let dateStr='';
+  try{const d=new Date(dateRaw);dateStr=d.toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch(e){dateStr=dateRaw;}
+  const body=gmailExtractBody(msg.payload);
+  const initial=fromName.charAt(0).toUpperCase();
+  contentEl.innerHTML='<div class="gmail-detail-card"><div class="gmail-detail-subj">'+escH(subject)+'</div><div class="gmail-detail-meta"><div class="gmail-av" style="width:38px;height:38px;font-size:14px">'+escH(initial)+'</div><div style="flex:1"><div class="gmail-detail-from">'+escH(fromName)+'</div><div class="gmail-detail-date">'+escH(dateStr)+'</div></div></div><div class="gmail-detail-body">'+escH(body)+'</div><div class="gmail-detail-actions"><button class="modal-btn modal-btn-p" style="flex:1" onclick="gmailReply()">Antworten</button><button class="modal-btn modal-btn-s" style="flex:1" onclick="gmailBackToInbox()">Zurueck</button></div></div>';
+}
+
+// ─── Gmail: Back Navigation ───
+function gmailBackToInbox(){
+  gmailCurrentView='inbox';gmailCurrentEmail=null;
+  document.getElementById('gmail-inbox-wrap').style.display='';
+  document.getElementById('gmail-detail-wrap').style.display='none';
+  document.getElementById('gmail-compose-wrap').style.display='none';
+  document.getElementById('s3-fallback').style.display='none';
+}
+
+function gmailBackFromCompose(){
+  if(gmailCurrentView==='compose-from-detail'&&gmailCurrentEmail){
+    gmailCurrentView='detail';
+    document.getElementById('gmail-inbox-wrap').style.display='none';
+    document.getElementById('gmail-detail-wrap').style.display='';
+    document.getElementById('gmail-compose-wrap').style.display='none';
+  }else{
+    gmailBackToInbox();
+  }
+}
+
+// ─── Gmail: Show Compose ───
+function gmailShowCompose(to,subject,body){
+  gmailCurrentView=gmailCurrentEmail?'compose-from-detail':'compose';
+  document.getElementById('gmail-inbox-wrap').style.display='none';
+  document.getElementById('gmail-detail-wrap').style.display='none';
+  document.getElementById('gmail-compose-wrap').style.display='';
+  document.getElementById('s3-fallback').style.display='none';
+  document.getElementById('gmail-to').value=to||'';
+  document.getElementById('gmail-subject').value=subject||'';
+  document.getElementById('gmail-body').value=body||'';
+  const status=document.getElementById('gmail-send-status');
+  status.classList.remove('show');status.style.display='none';
+  setTimeout(()=>document.getElementById('gmail-to').focus(),200);
+}
+
+// ─── Gmail: Reply ───
+function gmailReply(){
+  if(!gmailCurrentEmail)return;
+  const headers=gmailCurrentEmail.payload?.headers||[];
+  const from=headers.find(h=>h.name==='From')?.value||'';
+  const subject=headers.find(h=>h.name==='Subject')?.value||'';
+  const dateRaw=headers.find(h=>h.name==='Date')?.value||'';
+  const fromEmail=(from.match(/<([^>]+)>/)||[])[1]||from;
+  const fromName=from.replace(/<[^>]+>/,'').trim().replace(/^"|"$/g,'');
+  const body=gmailExtractBody(gmailCurrentEmail.payload);
+  const reSubject=subject.startsWith('Re:')?subject:'Re: '+subject;
+  const quotedBody='\n\n--- Urspruengliche Nachricht ---\nVon: '+fromName+'\nDatum: '+dateRaw+'\n\n'+body;
+  gmailShowCompose(fromEmail,reSubject,quotedBody);
+}
+
+// ─── Gmail: Send Email ───
+async function gmailSendEmail(){
+  if(!gmailTokenValid()){showSyncToast('Google nicht verbunden',false);return;}
+  const to=document.getElementById('gmail-to').value.trim();
+  const subject=document.getElementById('gmail-subject').value.trim();
+  const body=document.getElementById('gmail-body').value;
+  const status=document.getElementById('gmail-send-status');
+  if(!to){status.textContent='Bitte Empfaenger eingeben.';status.style.background='rgba(255,59,48,.08)';status.style.color='var(--red)';status.style.display='block';status.classList.add('show');return;}
+  if(!subject){status.textContent='Bitte Betreff eingeben.';status.style.background='rgba(255,149,0,.08)';status.style.color='var(--orange)';status.style.display='block';status.classList.add('show');return;}
+  // Build RFC 2822 email
+  const email='To: '+to+'\r\nSubject: =?UTF-8?B?'+btoa(unescape(encodeURIComponent(subject)))+'?=\r\nContent-Type: text/plain; charset=UTF-8\r\nMIME-Version: 1.0\r\n\r\n'+body;
+  const raw=base64urlEncode(email);
+  status.textContent='Wird gesendet...';status.style.background='rgba(0,122,255,.08)';status.style.color='var(--blue)';status.style.display='block';status.classList.add('show');
+  try{
+    const r=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{method:'POST',headers:{'Authorization':'Bearer '+gcalToken,'Content-Type':'application/json'},body:JSON.stringify({raw:raw})});
+    if(r.ok){
+      status.textContent='E-Mail gesendet!';status.style.background='rgba(52,199,89,.08)';status.style.color='var(--green)';
+      showSyncToast('E-Mail gesendet',true);
+      setTimeout(()=>{gmailBackToInbox();gmailLoadInbox();},1500);
+    }else{
+      const err=await r.json().catch(()=>({}));
+      status.textContent='Fehler: '+(err.error?.message||'HTTP '+r.status);status.style.background='rgba(255,59,48,.08)';status.style.color='var(--red)';
+      if(r.status===401){gcalToken='';localStorage.removeItem('lucien-gcal-token');}
+    }
+  }catch(e){status.textContent='Verbindungsfehler';status.style.background='rgba(255,59,48,.08)';status.style.color='var(--red)';}
+}
+
+// ─── Google Contacts ───
+let contactsData=[];
+let contactsSearchTerm='';
+
+function renderContacts(){
+  document.getElementById('tool-body').innerHTML='<input class="contacts-search" id="contacts-search-input" placeholder="Kontakt suchen..." oninput="filterContacts(this.value)"><div id="contacts-list-container"><div class="gmail-loading">Kontakte laden...</div></div>';
+  loadContacts();
+}
+
+async function loadContacts(){
+  if(!gmailTokenValid()){document.getElementById('contacts-list-container').innerHTML='<div class="gmail-empty">Google nicht verbunden — bitte in Einstellungen neu anmelden</div>';return;}
+  try{
+    const r=await fetch('https://people.googleapis.com/v1/people/me/connections?personFields=names,emailAddresses,phoneNumbers&pageSize=100&sortOrder=FIRST_NAME_ASCENDING',{headers:{'Authorization':'Bearer '+gcalToken}});
+    if(!r.ok){
+      if(r.status===401){gcalToken='';localStorage.removeItem('lucien-gcal-token');}
+      document.getElementById('contacts-list-container').innerHTML='<div class="gmail-empty">Fehler beim Laden ('+r.status+')</div>';return;
+    }
+    const data=await r.json();
+    contactsData=data.connections||[];
+    renderContactsList(contactsData);
+  }catch(e){document.getElementById('contacts-list-container').innerHTML='<div class="gmail-empty">Verbindungsfehler</div>';}
+}
+
+function filterContacts(term){
+  contactsSearchTerm=term.toLowerCase();
+  if(!contactsData.length)return;
+  const filtered=contactsData.filter(c=>{
+    const name=(c.names&&c.names[0]?c.names[0].displayName:'').toLowerCase();
+    const email=(c.emailAddresses&&c.emailAddresses[0]?c.emailAddresses[0].value:'').toLowerCase();
+    const phone=(c.phoneNumbers&&c.phoneNumbers[0]?c.phoneNumbers[0].value:'').toLowerCase();
+    return name.includes(contactsSearchTerm)||email.includes(contactsSearchTerm)||phone.includes(contactsSearchTerm);
+  });
+  renderContactsList(filtered);
+}
+
+function renderContactsList(contacts){
+  const container=document.getElementById('contacts-list-container');
+  if(!contacts.length){container.innerHTML='<div class="gmail-empty">'+(contactsSearchTerm?'Kein Kontakt gefunden':'Keine Kontakte vorhanden')+'</div>';return;}
+  const colors=['#007aff','#34c759','#ff9500','#af52de','#ff3b30','#5856d6','#32ade6','#ff2d55'];
+  container.innerHTML='<div style="font-size:13px;color:var(--t3);font-weight:600;margin-bottom:10px">'+contacts.length+' Kontakte</div><div class="contacts-list">'+contacts.map((c,i)=>{
+    const name=(c.names&&c.names[0])?c.names[0].displayName:'Unbekannt';
+    const email=(c.emailAddresses&&c.emailAddresses[0])?c.emailAddresses[0].value:'';
+    const phone=(c.phoneNumbers&&c.phoneNumbers[0])?c.phoneNumbers[0].value:'';
+    const initial=name.charAt(0).toUpperCase();
+    const color=colors[i%colors.length];
+    const detail=phone||email||'Keine Details';
+    let actions='';
+    if(phone)actions+='<button class="contact-act-btn" onclick="event.stopPropagation();copyToClip(\''+escH(phone.replace(/'/g,"\\'"))+'\')" title="Nummer kopieren"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></button>';
+    if(email)actions+='<button class="contact-act-btn" onclick="event.stopPropagation();copyToClip(\''+escH(email.replace(/'/g,"\\'"))+'\')" title="E-Mail kopieren"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></button>';
+    return '<div class="contact-item"><div class="contact-av" style="background:'+color+'">'+escH(initial)+'</div><div class="contact-info"><div class="contact-name">'+escH(name)+'</div><div class="contact-detail">'+escH(detail)+'</div></div><div class="contact-actions">'+actions+'</div></div>';
+  }).join('')+'</div>';
+}
+
+function copyToClip(text){
+  navigator.clipboard.writeText(text).then(()=>{showSyncToast('Kopiert: '+text,true);}).catch(()=>{});
+}
 
 // ─── Update hero events count ───
 function updateHeroEvents(){
