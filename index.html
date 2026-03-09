@@ -2,8 +2,13 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenClaw</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lucien">
+<meta name="theme-color" content="#f2f2f7">
+<link rel="manifest" href="manifest.json">
+<title>Lucien</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--blue:#007aff;--green:#34c759;--orange:#ff9500;--red:#ff3b30;--purple:#af52de;--pink:#ff2d55;--teal:#32ade6;--indigo:#5856d6;--bg:#f2f2f7;--card:#fff;--t1:#1c1c1e;--t2:#636366;--t3:#8e8e93;--t4:#aeaeb2;--t5:#c7c7cc;--t6:#d1d1d6;--sep:rgba(60,60,67,.04);--nav-bg:rgba(255,255,255,.94);--nav-border:rgba(0,0,0,.08);--search-bg:rgba(118,118,128,.08);--chat-bg:#f9f9fb;--chat-input-bg:#f2f2f7;--hdr-bg:rgba(242,242,247,.85);--overlay-bg:rgba(0,0,0,.4)}
@@ -223,6 +228,20 @@ body{background:#b8b8be;min-height:100vh;display:flex;justify-content:center;pad
 @keyframes dt{0%,100%{opacity:.15;transform:translateY(0)}50%{opacity:.5;transform:translateY(-3px)}}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fi{animation:fi .25s ease both}
+
+/* ════════════ MOBILE: FULLSCREEN WEBAPP ════════════ */
+@media(max-width:500px){
+  body{background:var(--bg)!important;padding:0;min-height:100dvh;display:block}
+  .phone{width:100%;height:100dvh;border-radius:0;box-shadow:none;position:fixed;inset:0}
+  .island{display:none}
+  .sbar{display:none}
+  .scr{top:0;bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .bn{height:calc(84px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
+  .modal-overlay{border-radius:0}
+  .hero{padding-top:max(52px, calc(env(safe-area-inset-top,44px) + 12px))}
+  .pg-hdr{padding-top:max(12px, env(safe-area-inset-top,44px))}
+  .c-top{padding-top:max(8px, env(safe-area-inset-top,44px))}
+}
 </style>
 </head>
 <body>
@@ -428,7 +447,8 @@ function toggleDark(){
   document.getElementById('dm-toggle').classList.toggle('on',isDark);
   document.getElementById('dm-toggle').classList.toggle('off',!isDark);
   document.getElementById('dm-label').textContent=isDark?'An':'Aus';
-  document.body.style.background=isDark?'#000':'#b8b8be';
+  document.body.style.background=isDark?'#000':'';
+  document.querySelector('meta[name="theme-color"]').content=isDark?'#000':'#f2f2f7';
   // Re-apply statusbar
   const onHome=!document.getElementById('s0').classList.contains('off');
   document.getElementById('sbar').style.color=(onHome||isDark)?'#fff':'#1c1c1e';
