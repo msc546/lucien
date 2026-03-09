@@ -282,7 +282,7 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 .install-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t4);flex-shrink:0;font-size:20px}
 
 /* ════════════ iOS PERMISSION DIALOG ════════════ */
-.perm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10000;display:none;align-items:center;justify-content:center;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:500;display:none;align-items:center;justify-content:center;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border-radius:inherit}
 .perm-overlay.show{display:flex}
 .perm-box{width:280px;background:var(--card);border-radius:14px;text-align:center;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.25);animation:fi .2s ease}
 .perm-body{padding:20px 16px 0}
@@ -297,7 +297,7 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 .perm-btn:active{background:rgba(0,0,0,.04)}
 
 /* ════════════ SYNC INDICATOR ════════════ */
-.sync-toast{position:fixed;top:env(safe-area-inset-top,50px);left:50%;transform:translateX(-50%) translateY(-100px);background:var(--card);border-radius:14px;padding:12px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:10001;transition:transform .3s cubic-bezier(.4,0,.2,1);font-size:14px;font-weight:600;color:var(--t1);white-space:nowrap}
+.sync-toast{position:absolute;top:60px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--card);border-radius:14px;padding:12px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:10001;transition:transform .3s cubic-bezier(.4,0,.2,1);font-size:14px;font-weight:600;color:var(--t1);white-space:nowrap}
 .sync-toast.show{transform:translateX(-50%) translateY(10px)}
 .sync-spinner{width:18px;height:18px;border:2.5px solid var(--sep);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
 .sync-check svg{width:18px;height:18px;fill:none;stroke:var(--green);stroke-width:2.5;stroke-linecap:round}
@@ -305,7 +305,9 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 </style>
 </head>
 <body>
-<!-- PERMISSION DIALOG -->
+<div class="phone">
+
+<!-- PERMISSION DIALOG (inside phone for z-index) -->
 <div class="perm-overlay" id="perm-overlay">
   <div class="perm-box">
     <div class="perm-body">
@@ -321,8 +323,6 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 </div>
 <!-- SYNC TOAST -->
 <div class="sync-toast" id="sync-toast"><div class="sync-spinner" id="sync-spin"></div><span id="sync-text">Synchronisiere...</span></div>
-
-<div class="phone">
 <div class="island"></div>
 <div class="sbar" id="sbar"><span class="sbar-t" id="clk">9:41</span><div class="sbar-r"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="3" width="3.5" height="9" rx="1.2"/><rect x="5" y="1.5" width="3.5" height="10.5" rx="1.2"/><rect x="10" y="0" width="3.5" height="12" rx="1.2"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg><svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 3C10.2 3 12.2 3.9 13.6 5.3L15 3.9C13.2 1.8 10.7.5 8 .5S2.8 1.8 1 3.9L2.4 5.3C3.8 3.9 5.8 3 8 3Z" opacity=".35"/><path d="M8 6.2C9.5 6.2 10.8 6.8 11.8 7.7L13.2 6.3C11.8 5 10 4.2 8 4.2S4.2 5 2.8 6.3L4.2 7.7C5.2 6.8 6.5 6.2 8 6.2Z" opacity=".65"/><circle cx="8" cy="11" r="1.8"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y="1" width="23" height="11" rx="4" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="24.5" y="4.5" width="2" height="4" rx="1" opacity=".4"/><rect x="2" y="2.5" width="18" height="8" rx="2.5"/></svg></div></div>
 
@@ -374,8 +374,9 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
   <div class="c-top"><div class="c-bk" onclick="showChatList()"><svg viewBox="0 0 9 16"><path d="M8 1L1.5 8 8 15"/></svg>Chats</div><div class="c-mid"><div class="c-nm" id="ct">Chat</div><div class="c-sub">Claude Sonnet 4.5</div></div><div style="width:70px"></div></div>
   <div class="c-body" id="cm"><div class="c-time">Heute, 9:41</div></div>
   <div id="c-quick-wrap"></div>
-  <div class="c-in"><div class="c-row"><button class="c-attach" onclick="document.getElementById('file-picker').click()"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></button><input type="text" class="c-input" id="chat-input" placeholder="Nachricht..." autocomplete="off" onkeydown="if(event.key==='Enter')sendMessage()"><button class="c-send" id="send-btn" onclick="sendMessage()"><svg viewBox="0 0 24 24"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg></button></div></div>
+  <div class="c-in"><div class="c-row"><button class="c-attach" id="attach-btn" onclick="openFilePicker()"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></button><input type="text" class="c-input" id="chat-input" placeholder="Nachricht..." autocomplete="off" onkeydown="if(event.key==='Enter')sendMessage()"><button class="c-send" id="send-btn" onclick="sendMessage()"><svg viewBox="0 0 24 24"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg></button></div></div>
   <input type="file" id="file-picker" multiple style="display:none" onchange="handleFiles(this.files)">
+  <input type="file" id="photo-picker" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
 </div>
 
 <!-- ═══ S2: CALENDAR ═══ -->
@@ -582,6 +583,7 @@ function openChat(key){
   const s=SHORTCUTS[key];if(!s)return;
   chatMessages=[];
   chatSystem=s.system;
+  currentChatType=key;
   document.getElementById('ct').textContent=s.title;
   document.querySelectorAll('#bn .ni').forEach((n,j)=>n.classList.toggle('on',j===1));
   show('s1b');
@@ -683,14 +685,113 @@ async function sendMessage(){
   }
 }
 
+// ─── File Picker ───
+let currentChatType='';
+
+function openFilePicker(){
+  if(currentChatType==='photos'){
+    document.getElementById('photo-picker').click();
+  }else{
+    document.getElementById('file-picker').click();
+  }
+}
+
 // ─── File Handling ───
+let pendingImages=[];
+
 function handleFiles(fileList){
   if(!fileList.length)return;
   selectedFiles=Array.from(fileList);
+  pendingImages=[];
+
+  const imageFiles=selectedFiles.filter(f=>f.type.startsWith('image/'));
+  const otherFiles=selectedFiles.filter(f=>!f.type.startsWith('image/'));
+
+  // Show preview of selected files
+  const cm=document.getElementById('cm');
+  if(imageFiles.length){
+    const preview=document.createElement('div');
+    preview.className='fi';
+    preview.style.cssText='align-self:flex-end;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:85%';
+    let loaded=0;
+    imageFiles.forEach(f=>{
+      const reader=new FileReader();
+      reader.onload=e=>{
+        const img=document.createElement('img');
+        img.src=e.target.result;
+        img.style.cssText='width:80px;height:80px;object-fit:cover;border-radius:12px';
+        preview.appendChild(img);
+        // Store base64 for Claude Vision
+        const base64=e.target.result.split(',')[1];
+        pendingImages.push({type:'image',source:{type:'base64',media_type:f.type,data:base64}});
+        loaded++;
+        if(loaded===imageFiles.length){
+          cm.scrollTop=cm.scrollHeight;
+        }
+      };
+      reader.readAsDataURL(f);
+    });
+    cm.appendChild(preview);
+  }
+
   const names=selectedFiles.map(f=>f.name).join(', ');
-  const input=document.getElementById('chat-input');
-  input.value='Ich habe diese Dateien ausgewaehlt: '+names;
-  input.focus();
+  const count=selectedFiles.length;
+  const txt=imageFiles.length?count+' Foto'+(count>1?'s':'')+' ausgewaehlt':count+' Datei'+(count>1?'en':'')+': '+names;
+
+  addBubble('user',txt);
+  chatMessages.push({role:'user',content:txt});
+
+  // Auto-send to Claude if images are selected
+  if(imageFiles.length&&savedKey){
+    setTimeout(()=>sendWithImages('Analysiere diese '+imageFiles.length+' Foto'+(imageFiles.length>1?'s':'')+'. Beschreibe was du siehst und schlage vor wie ich sie sortieren/organisieren koennte.'),500);
+  }else if(!savedKey){
+    addBubble('assistant','Dateien ausgewaehlt! Gib einen API Key in den Einstellungen ein, damit ich sie analysieren kann.');
+  }
+
+  // Reset file input
+  document.getElementById('file-picker').value='';
+}
+
+async function sendWithImages(text){
+  if(isTyping||!savedKey)return;
+  isTyping=true;
+  showTyping();
+
+  // Build message with images
+  const content=[...pendingImages,{type:'text',text:text}];
+  const apiMessages=[...chatMessages.filter(m=>m.role==='user'||m.role==='assistant')];
+  // Replace last user message with multimodal content
+  if(apiMessages.length&&apiMessages[apiMessages.length-1].role==='user'){
+    apiMessages[apiMessages.length-1]={role:'user',content:content};
+  }else{
+    apiMessages.push({role:'user',content:content});
+  }
+
+  try{
+    const res=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        apiKey:savedKey,
+        model:MODEL_IDS[currentModel],
+        system:chatSystem,
+        messages:apiMessages
+      })
+    });
+    const data=await res.json();
+    hideTyping();isTyping=false;
+    pendingImages=[];
+    if(data.content&&data.content[0]){
+      const reply=data.content[0].text;
+      addBubble('assistant',reply);
+      chatMessages.push({role:'assistant',content:reply});
+    }else if(data.error){
+      addBubble('assistant','Fehler: '+(data.error.message||JSON.stringify(data.error)));
+    }
+  }catch(e){
+    hideTyping();isTyping=false;
+    addBubble('assistant','Verbindungsfehler. Pruefe deine Internetverbindung.');
+  }
 }
 
 // ─── Model Selection ───
