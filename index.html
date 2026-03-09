@@ -10,6 +10,7 @@
 <link rel="manifest" href="manifest.json">
 <title>Lucien</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{--blue:#007aff;--green:#34c759;--orange:#ff9500;--red:#ff3b30;--purple:#af52de;--pink:#ff2d55;--teal:#32ade6;--indigo:#5856d6;--bg:#f2f2f7;--card:#fff;--t1:#1c1c1e;--t2:#636366;--t3:#8e8e93;--t4:#aeaeb2;--t5:#c7c7cc;--t6:#d1d1d6;--sep:rgba(60,60,67,.04);--nav-bg:rgba(255,255,255,.94);--nav-border:rgba(0,0,0,.08);--search-bg:rgba(118,118,128,.08);--chat-bg:#f9f9fb;--chat-input-bg:#f2f2f7;--hdr-bg:rgba(242,242,247,.85);--overlay-bg:rgba(0,0,0,.4)}
 .dark{--bg:#000;--card:#1c1c1e;--t1:#f5f5f7;--t2:#aeaeb2;--t3:#8e8e93;--t4:#636366;--t5:#48484a;--t6:#3a3a3c;--sep:rgba(255,255,255,.06);--nav-bg:rgba(28,28,30,.94);--nav-border:rgba(255,255,255,.08);--search-bg:rgba(118,118,128,.2);--chat-bg:#000;--chat-input-bg:#1c1c1e;--hdr-bg:rgba(0,0,0,.85);--overlay-bg:rgba(0,0,0,.7)}
@@ -420,8 +421,9 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 
 <!-- ═══ S0: HOME ═══ -->
 <div class="scr" id="s0">
-  <div class="hero"><div class="hero-hi">Guten Morgen</div><div class="hero-name">Semih</div><div class="hero-row"><div class="hero-chip"><div class="hero-dot" style="background:var(--green)"></div><div class="hero-chip-t">3 Termine</div></div><div class="hero-chip"><div class="hero-dot" style="background:var(--blue)"></div><div class="hero-chip-t">127K Tokens</div></div><div class="hero-chip"><div class="hero-dot" style="background:var(--orange)"></div><div class="hero-chip-t">$0.47</div></div></div></div>
-  <div class="h-search"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>Frag Claude etwas…</span></div>
+  <div class="hero"><div class="hero-hi" id="hero-greeting">Guten Tag</div><div class="hero-name" id="hero-name">Lucien</div><div class="hero-row"><div class="hero-chip" onclick="nav(2)" style="cursor:pointer"><div class="hero-dot" style="background:var(--green)"></div><div class="hero-chip-t" id="hero-events">0 Termine</div></div><div class="hero-chip"><div class="hero-dot" style="background:var(--blue)"></div><div class="hero-chip-t" id="hero-tokens">0 Tokens</div></div></div></div>
+  <div class="h-search" onclick="openChat('clipboard')" style="cursor:pointer"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>Frag Claude etwas…</span></div>
+  <div id="weather-card" style="margin:-6px 20px 12px;background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:0 .5px 2px rgba(0,0,0,.03);display:none"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Wetter</div><div style="display:flex;align-items:baseline;gap:4px;margin-top:2px"><span style="font-size:32px;font-weight:800;color:var(--t1)" id="w-temp">--</span><span style="font-size:16px;font-weight:600;color:var(--t3)">°C</span></div><div style="font-size:13px;color:var(--t2);margin-top:2px" id="w-desc">Laden...</div></div><div style="font-size:11px;color:var(--t4);text-align:right"><div id="w-wind"></div><div id="w-city" style="margin-top:2px"></div></div></div></div>
   <div class="h-sec">Schnellzugriff</div>
   <div class="h-grid">
     <div class="h-card" onclick="openChat('files')"><div class="h-card-glow" style="color:var(--blue)"></div><div class="h-card-icon" style="background:linear-gradient(140deg,#007aff,#5856d6)"><svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div><div class="h-card-t">Dateien</div><div class="h-card-s">Durchsuchen & sortieren</div></div>
@@ -458,13 +460,7 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
   <div class="pg-hdr"><div class="pg-t">Chats</div></div>
   <div style="padding:12px 20px 0"><div class="h-search" style="margin:0;box-shadow:none;background:rgba(118,118,128,.08);border-radius:12px;padding:11px 14px"><svg viewBox="0 0 24 24" stroke-linecap="round" style="width:16px;height:16px;stroke:var(--t4)"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span style="font-size:15px;color:var(--t4)">Chats durchsuchen</span></div></div>
   <div class="h-sec">Letzte Konversationen</div>
-  <div class="cl-wrap">
-    <div class="cl-item" onclick="openChat('files')"><div class="cl-av" style="background:linear-gradient(140deg,var(--blue),var(--indigo))"><svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div><div class="cl-txt"><div class="cl-name">Dateien sortieren</div><div class="cl-pre">47 Dateien in 6 Ordner sortiert. Alle nach Datum umbenannt.</div></div><div class="cl-meta"><div class="cl-time">9:38</div></div></div>
-    <div class="cl-item" onclick="openChat('photos')"><div class="cl-av" style="background:linear-gradient(140deg,var(--orange),var(--red))"><svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/><circle cx="16" cy="9" r="2"/></svg></div><div class="cl-txt"><div class="cl-name">Fotos sortieren</div><div class="cl-pre">50 Fotos analysiert. 4 Alben erstellt, 3 unscharfe markiert.</div></div><div class="cl-meta"><div class="cl-time">Gestern</div></div></div>
-    <div class="cl-item" onclick="openChat('email')"><div class="cl-av" style="background:linear-gradient(140deg,var(--green),#30d158)"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="cl-txt"><div class="cl-name">Krankmeldung</div><div class="cl-pre">E-Mail vorbereitet und in Zwischenablage kopiert.</div></div><div class="cl-meta"><div class="cl-time">Mo</div></div></div>
-    <div class="cl-item" onclick="openChat('meeting')"><div class="cl-av" style="background:linear-gradient(140deg,var(--purple),var(--indigo))"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div class="cl-txt"><div class="cl-name">PaTiLu Pizzaabend</div><div class="cl-pre">Termin erstellt: Sa 14. März, 19:00 bei Luca</div></div><div class="cl-meta"><div class="cl-time">Mo</div></div></div>
-    <div class="cl-item" onclick="openChat('whatsapp')"><div class="cl-av" style="background:linear-gradient(140deg,var(--green),var(--teal))"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="cl-txt"><div class="cl-name">Lilian — WhatsApp</div><div class="cl-pre">Hey Schatz, ich komme heute etwas spaeter...</div></div><div class="cl-meta"><div class="cl-time">So</div></div></div>
-    <div class="cl-item" onclick="openChat('contacts')"><div class="cl-av" style="background:linear-gradient(140deg,var(--teal),var(--blue))"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="cl-txt"><div class="cl-name">Kontakte durchsuchen</div><div class="cl-pre">Telefonnummer von Luca gesucht</div></div><div class="cl-meta"><div class="cl-time">Sa</div></div></div>
+  <div class="cl-wrap" id="chat-list">
     <div class="cl-item" onclick="openChat('reminders')"><div class="cl-av" style="background:linear-gradient(140deg,var(--red),#ff6961)"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2z"/><path d="M18 16v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><div class="cl-txt"><div class="cl-name">Erinnerung gesetzt</div><div class="cl-pre">Morgen 8:00 — iPad-Enrollment BSZ</div></div><div class="cl-meta"><div class="cl-time">Fr</div></div></div>
   </div>
   <div style="text-align:center;padding:20px"><div style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--blue);color:#fff;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer" onclick="openChat('files')">Neuer Chat</div></div>
@@ -483,9 +479,8 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 <!-- ═══ S2: CALENDAR ═══ -->
 <div class="scr off" id="s2">
   <div class="pg-hdr"><div class="pg-t">Kalender</div></div>
-  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 22px 0"><span style="font-size:20px;font-weight:800;color:var(--t1)">März 2026</span><span style="font-size:14px;font-weight:600;color:var(--blue);cursor:pointer" onclick="openEvModal()">+ Neuer Termin</span></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 22px 0"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px;font-weight:800;color:var(--t1)" id="cal-month-title">März 2026</span><button onclick="calNav(-1)" style="width:28px;height:28px;border-radius:8px;background:var(--search-bg);border:none;cursor:pointer;font-size:16px;color:var(--t2)">‹</button><button onclick="calNav(1)" style="width:28px;height:28px;border-radius:8px;background:var(--search-bg);border:none;cursor:pointer;font-size:16px;color:var(--t2)">›</button><button onclick="calToday()" style="padding:4px 10px;border-radius:8px;background:var(--search-bg);border:none;cursor:pointer;font-size:12px;font-weight:600;color:var(--blue);font-family:inherit">Heute</button></div><div style="display:flex;gap:10px;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--green);cursor:pointer;display:none" onclick="syncGcal()" id="cal-sync-btn">Sync</span><span style="font-size:14px;font-weight:600;color:var(--blue);cursor:pointer" onclick="openEvModal()">+ Neu</span></div></div>
   <div class="cg" id="cal-grid"></div>
-  <div class="ev-new"><div class="ev-badge">Von Lucien erstellt</div><div class="ev-title">PaTiLu Pizzaabend</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Sa, 14. März · 19:00 – 22:00</div><div class="ev-info"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="2"/></svg>Bei Luca</div><div class="ev-btns"><button class="ev-btn ev-p" onclick="exportEventToCalendar('PaTiLu Pizzaabend',14,'19','Bei Luca')">In Kalender</button><button class="ev-btn ev-s" onclick="openEvModal()">Bearbeiten</button></div></div>
   <div id="cal-day-events">
     <div class="cal-ev-hdr" id="cal-day-title">Heute — Mo, 9. März</div>
     <div class="cal-events" id="cal-ev-list"></div>
@@ -496,11 +491,11 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
 <!-- ═══ S3: MESSAGES ═══ -->
 <div class="scr off" id="s3">
   <div class="pg-hdr"><div class="pg-t">Nachrichten</div><div class="pg-s">Vorbereitet mit Claude</div></div>
-  <div class="h-sec">Entwürfe</div>
+  <div class="h-sec">Vorlagen</div>
   <div style="margin:0 20px">
-    <div class="mc" onclick="openChat('email')"><div class="mc-h"><div class="mc-av" style="background:linear-gradient(140deg,var(--blue),var(--indigo))">CM</div><div style="flex:1"><div class="mc-from">Chef — Krankmeldung</div><div class="mc-date">Heute, 9:12</div></div></div><div class="mc-pre">Sehr geehrter Herr [Name], hiermit melde ich mich für heute krank…</div><div class="mc-tag" style="background:rgba(52,199,89,.06);color:var(--green)">Kopiert</div></div>
-    <div class="mc" onclick="openChat('whatsapp')"><div class="mc-h"><div class="mc-av" style="background:linear-gradient(140deg,var(--green),#30d158)">L</div><div style="flex:1"><div class="mc-from">Lilian — WhatsApp</div><div class="mc-date">Gestern, 20:44</div></div></div><div class="mc-pre">Hey Schatz, ich komme heute etwas später…</div><div class="mc-tag" style="background:rgba(0,122,255,.05);color:var(--blue)">Kopiert</div></div>
-    <div class="mc" onclick="openChat('sms')"><div class="mc-h"><div class="mc-av" style="background:linear-gradient(140deg,var(--orange),#ffcc02)">P</div><div style="flex:1"><div class="mc-from">Papa — BTC Update</div><div class="mc-date">Mo, 7. März</div></div></div><div class="mc-pre">Hi Papa! Kurzes BTC-Update: Dein Sparplan läuft super…</div><div class="mc-tag" style="background:rgba(175,82,222,.05);color:var(--purple)">Entwurf</div></div>
+    <div class="mc" onclick="openChat('email')"><div class="mc-h"><div class="mc-av" style="background:linear-gradient(140deg,var(--blue),var(--indigo))">E</div><div style="flex:1"><div class="mc-from">E-Mail Vorlage</div><div class="mc-date">Krankmeldung, Bewerbung, etc.</div></div></div><div class="mc-pre">Lass dir eine professionelle E-Mail vorbereiten</div><div class="mc-tag" style="background:rgba(0,122,255,.05);color:var(--blue)">Vorlage</div></div>
+    <div class="mc" onclick="openChat('whatsapp')"><div class="mc-h"><div class="mc-av" style="background:linear-gradient(140deg,var(--green),#30d158)">W</div><div style="flex:1"><div class="mc-from">WhatsApp Nachricht</div><div class="mc-date">Nachricht vorbereiten</div></div></div><div class="mc-pre">Text vorbereiten lassen und direkt kopieren</div><div class="mc-tag" style="background:rgba(52,199,89,.06);color:var(--green)">Vorlage</div></div>
+    <div class="mc" onclick="openChat('clipboard')"><div class="mc-h"><div class="mc-av" style="background:linear-gradient(140deg,var(--teal),var(--blue))">T</div><div style="flex:1"><div class="mc-from">Text verarbeiten</div><div class="mc-date">Zusammenfassen, uebersetzen, etc.</div></div></div><div class="mc-pre">Text einfuegen und von Claude bearbeiten lassen</div><div class="mc-tag" style="background:rgba(175,82,222,.05);color:var(--purple)">Vorlage</div></div>
   </div>
   <div class="h-sec">Neue Nachricht</div>
   <div style="margin:0 20px 20px"><div class="h-list"><div class="h-list-row" onclick="openChat('email')"><div class="h-list-ic" style="background:var(--blue)"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div style="flex:1"><div class="h-list-t">E-Mail</div><div class="h-list-s">Claude schreibt, du sendest</div></div><span style="color:var(--t6);font-size:17px">›</span></div><div class="h-list-row" onclick="openChat('whatsapp')"><div class="h-list-ic" style="background:var(--green)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div style="flex:1"><div class="h-list-t">WhatsApp</div><div class="h-list-s">Text vorbereiten & kopieren</div></div><span style="color:var(--t6);font-size:17px">›</span></div></div></div>
@@ -514,6 +509,7 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
     <div class="sr"><div class="sr-ic" style="background:#1c1c1e"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Dark Mode</div><div style="font-size:12px;color:var(--t3);margin-top:1px;font-weight:500" id="dm-label">Aus</div></div><div class="tg off" id="dm-toggle" onclick="toggleDark()"><div class="tg-k"></div></div></div>
   </div></div>
   <div class="sg"><div class="sg-t">API</div><div class="sc"><div class="sr" style="cursor:pointer" onclick="openApiModal()"><div class="sr-ic" style="background:var(--green)"><svg viewBox="0 0 24 24"><path d="M15 7h3a5 5 0 010 10h-3m-6 0H6A5 5 0 016 7h3m-1 5h8"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Anthropic API Key</div><div style="font-size:12px;margin-top:1px;font-weight:500" id="api-status">Kein Key gesetzt</div></div><span style="color:var(--t5)">›</span></div></div></div>
+  <div class="sg"><div class="sg-t">Kalender</div><div class="sc"><div class="sr" style="cursor:pointer" onclick="openGcalModal()"><div class="sr-ic" style="background:var(--purple)"><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Google Calendar</div><div style="font-size:12px;margin-top:1px;font-weight:500" id="gcal-status" style="color:var(--t4)">Nicht verbunden</div></div><span style="color:var(--t5)">›</span></div></div></div>
   <div class="sg"><div class="sg-t">Modell</div><div class="sc" id="ms">
     <div class="sr" onclick="sm(0)"><div class="rd" data-i="0"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Haiku 4.5 <span style="font-size:11px;font-weight:700;color:var(--green)">Schnell</span></div><div style="font-size:12px;color:var(--t3);font-family:monospace;margin-top:1px">$1 / $5 pro MTok</div></div></div>
     <div class="sr" onclick="sm(1)"><div class="rd on" data-i="1"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">Sonnet 4.5 <span style="font-size:11px;font-weight:700;color:var(--blue)">Empfohlen</span></div><div style="font-size:12px;color:var(--t3);font-family:monospace;margin-top:1px">$3 / $15 pro MTok</div></div></div>
@@ -539,7 +535,32 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
     <div class="modal-status" id="api-msg"></div>
     <div class="modal-btns">
       <button class="modal-btn modal-btn-s" onclick="closeApiModal()">Abbrechen</button>
+      <button class="modal-btn modal-btn-s" style="color:var(--red)" onclick="deleteApiKey()">Löschen</button>
       <button class="modal-btn modal-btn-p" onclick="saveApiKey()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- GOOGLE CALENDAR MODAL -->
+<div class="modal-overlay" id="gcal-modal" onclick="if(event.target===this)closeGcalModal()">
+  <div class="modal">
+    <div class="modal-title">Google Calendar</div>
+    <div class="modal-sub">Verbinde deinen Google Kalender fuer echten Zugriff auf Termine.</div>
+    <input class="modal-input" id="gcal-client-id" type="text" placeholder="Google OAuth Client ID" autocomplete="off" spellcheck="false">
+    <div class="modal-status" id="gcal-msg"></div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-s" onclick="closeGcalModal()">Abbrechen</button>
+      <button class="modal-btn modal-btn-p" id="gcal-connect-btn" onclick="connectGcal()">Verbinden</button>
+    </div>
+    <div style="margin-top:16px;padding:14px;background:var(--bg);border-radius:12px;font-size:12px;color:var(--t3);line-height:1.6">
+      <div style="font-weight:700;color:var(--t2);margin-bottom:4px">So gehts:</div>
+      1. console.cloud.google.com<br>
+      2. Neues Projekt erstellen<br>
+      3. APIs &amp; Services → Calendar API aktivieren<br>
+      4. Zugangsdaten → OAuth 2.0 Client-ID<br>
+      5. Typ: Webanwendung<br>
+      6. Autorisierte JS-Urspruenge: <span style="color:var(--blue);font-family:monospace">https://lucien-nine.vercel.app</span><br>
+      7. Client-ID hier einfuegen
     </div>
   </div>
 </div>
@@ -550,7 +571,7 @@ body{background:#1a1a2e;min-height:100vh;display:flex;justify-content:center;ali
     <div style="font-size:20px;font-weight:800;color:var(--t1);margin-bottom:4px;letter-spacing:-.3px">Neuer Termin</div>
     <div style="font-size:13px;color:var(--t3);margin-bottom:16px;font-weight:500">Termin manuell hinzufuegen</div>
     <input class="ev-field" id="ev-title" placeholder="Titel (z.B. Meeting)" autocomplete="off">
-    <input class="ev-field" id="ev-date" type="number" placeholder="Tag im Maerz (1-31)" min="1" max="31">
+    <input class="ev-field" id="ev-date" type="date">
     <input class="ev-field" id="ev-time" placeholder="Uhrzeit (z.B. 14:00 - 15:00)">
     <select class="ev-field" id="ev-cal" style="appearance:auto"><option value="Privat">Privat</option><option value="Arbeit">Arbeit</option><option value="Schule">Schule</option><option value="Ausbildung">Ausbildung</option></select>
     <div style="display:flex;gap:10px;margin-top:6px">
@@ -715,8 +736,10 @@ function openChat(key){
 }
 
 function showChatList(){
+  saveCurrentChat();
   document.querySelectorAll('#bn .ni').forEach((n,j)=>n.classList.toggle('on',j===1));
   show('s1');
+  renderChatList();
 }
 
 function addBubble(role,text){
@@ -1003,39 +1026,41 @@ function saveApiKey(){
 }
 
 // ─── Calendar ───
-const CAL_COLORS={Privat:'var(--red)',Arbeit:'var(--blue)',Schule:'var(--green)',Ausbildung:'var(--purple)',indasys:'var(--orange)',PaTiLu:'var(--purple)'};
-const DEFAULT_EVENTS={
-  3:[{t:'Berufsschule IT-Schule',time:'08:00 - 15:15',cal:'Schule'}],
-  5:[{t:'Sprint Planning',time:'10:00 - 11:00',cal:'Arbeit'}],
-  9:[{t:'Zahnarzt Dr. Mueller',time:'10:30 - 11:15',cal:'Privat'},{t:'Team Meeting - Sprint Review',time:'14:00 - 15:00',cal:'Arbeit'},{t:'AP1 Lerngruppe',time:'17:00 - 19:00',cal:'Ausbildung'}],
-  10:[{t:'BSZ Leonberg - Vor-Ort',time:'08:00 - 16:00',cal:'indasys'}],
-  11:[{t:'Berufsschule IT-Schule',time:'08:00 - 15:15',cal:'Schule'}],
-  14:[{t:'PaTiLu Pizzaabend',time:'19:00 - 22:00',cal:'PaTiLu'}],
-  18:[{t:'Wirtschaftskunde Klausur',time:'09:00 - 10:30',cal:'Schule'},{t:'Lilian - Abendessen',time:'19:00',cal:'Privat'}]
-};
-let calEvents=JSON.parse(localStorage.getItem('lucien-cal')||'null')||JSON.parse(JSON.stringify(DEFAULT_EVENTS));
+const CAL_COLORS={Privat:'var(--red)',Arbeit:'var(--blue)',Schule:'var(--green)',Ausbildung:'var(--purple)',Google:'var(--teal)',Sonstig:'var(--orange)'};
 const WDAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
-let selectedDay=9;
+const MONTHS_FULL=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const MONTHS_SHORT=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+let calYear,calMonth,selectedDay;
+let gcalClientId=localStorage.getItem('lucien-gcal-clientid')||'';
+let gcalToken=localStorage.getItem('lucien-gcal-token')||'';
+let gcalTokenExpiry=parseInt(localStorage.getItem('lucien-gcal-expiry')||'0');
+let gcalEvents=[];
+function getMonthEvents(y,m){return JSON.parse(localStorage.getItem('lucien-cal-'+y+'-'+String(m+1).padStart(2,'0'))||'{}')}
+function saveMonthEvents(y,m,ev){localStorage.setItem('lucien-cal-'+y+'-'+String(m+1).padStart(2,'0'),JSON.stringify(ev))}
+function getGcalDayEvents(y,m){const r={};(gcalEvents||[]).forEach(e=>{const s=e.start?.dateTime||e.start?.date;if(!s)return;const d=new Date(s);if(d.getFullYear()===y&&d.getMonth()===m){const day=d.getDate();if(!r[day])r[day]=[];r[day].push({t:e.summary||'Kein Titel',time:String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'),cal:'Google'});}});return r;}
 
 function getEvColor(cal){return CAL_COLORS[cal]||'var(--blue)'}
 
-function saveCalEvents(){localStorage.setItem('lucien-cal',JSON.stringify(calEvents))}
-
 function buildCalendar(){
   const g=document.getElementById('cal-grid');g.innerHTML='';
+  const today=new Date();const y=calYear,m=calMonth;
+  const firstDay=new Date(y,m,1).getDay();const dim=new Date(y,m+1,0).getDate();const dimPrev=new Date(y,m,0).getDate();
+  const titleEl=document.getElementById('cal-month-title');
+  if(titleEl)titleEl.textContent=MONTHS_FULL[m]+' '+y;
   WDAYS.forEach(d=>{const el=document.createElement('div');el.className='cdn';el.textContent=d;g.appendChild(el)});
-  for(let d=23;d<=28;d++){const el=document.createElement('div');el.className='cd ot';el.textContent=d;g.appendChild(el)}
-  for(let d=1;d<=31;d++){
-    const el=document.createElement('div');
-    let cls='cd';
-    if(d===9)cls+=' td';
-    if(calEvents[d])cls+=' ev';
-    if(d===selectedDay&&d!==9)cls+=' sel';
-    el.className=cls;el.textContent=d;
-    el.onclick=()=>selectDay(d);
-    g.appendChild(el);
+  const startIdx=(firstDay+6)%7;
+  for(let i=startIdx-1;i>=0;i--){const el=document.createElement('div');el.className='cd ot';el.textContent=dimPrev-i;g.appendChild(el)}
+  const isThisMonth=(y===today.getFullYear()&&m===today.getMonth());const td=today.getDate();
+  const localEv=getMonthEvents(y,m);const gEv=getGcalDayEvents(y,m);
+  for(let d=1;d<=dim;d++){
+    const el=document.createElement('div');let cls='cd';
+    if(isThisMonth&&d===td)cls+=' td';
+    if(localEv[d]||gEv[d])cls+=' ev';
+    if(d===selectedDay&&!(isThisMonth&&d===td))cls+=' sel';
+    el.className=cls;el.textContent=d;el.onclick=()=>selectDay(d);g.appendChild(el);
   }
-  for(let d=1;d<=5;d++){const el=document.createElement('div');el.className='cd ot';el.textContent=d;g.appendChild(el)}
+  const total=startIdx+dim;const rem=(7-total%7)%7;
+  for(let d=1;d<=rem;d++){const el=document.createElement('div');el.className='cd ot';el.textContent=d;g.appendChild(el)}
   showDayEvents(selectedDay);
 }
 
@@ -1050,43 +1075,32 @@ function selectDay(d){
 }
 
 function showDayEvents(d){
-  const titleEl=document.getElementById('cal-day-title');
-  const listEl=document.getElementById('cal-ev-list');
-  const days=['So','Mo','Di','Mi','Do','Fr','Sa'];
-  const dow=new Date(2026,2,d).getDay();
-  titleEl.textContent=(d===9?'Heute - ':'')+days[dow]+', '+d+'. Maerz';
-  const events=calEvents[d];
-  if(!events||!events.length){
-    listEl.innerHTML='<div style="padding:12px 0;font-size:14px;color:var(--t3)">Keine Termine an diesem Tag</div>';
-    return;
-  }
-  listEl.innerHTML=events.map(e=>{
-    const c=getEvColor(e.cal);
-    return '<div class="evc"><div class="evb" style="background:'+c+'"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">'+e.t+'</div><div style="font-size:12.5px;color:var(--t2);margin-top:2px">'+e.time+'</div><div style="font-size:11px;font-weight:700;color:'+c+';margin-top:3px">'+e.cal+'</div></div></div>';
-  }).join('');
+  const titleEl=document.getElementById('cal-day-title');const listEl=document.getElementById('cal-ev-list');
+  const days=['So','Mo','Di','Mi','Do','Fr','Sa'];const dow=new Date(calYear,calMonth,d).getDay();
+  const today=new Date();const isToday=(calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate());
+  titleEl.textContent=(isToday?'Heute — ':'')+days[dow]+', '+d+'. '+MONTHS_SHORT[calMonth];
+  const local=getMonthEvents(calYear,calMonth)[d]||[];const gcal=getGcalDayEvents(calYear,calMonth)[d]||[];
+  const events=[...local,...gcal];
+  if(!events.length){listEl.innerHTML='<div style="padding:12px 0;font-size:14px;color:var(--t3)">Keine Termine</div>';return;}
+  listEl.innerHTML=events.map(e=>{const c=getEvColor(e.cal||'Sonstig');return '<div class="evc"><div class="evb" style="background:'+c+'"></div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t1)">'+escH(e.t)+'</div><div style="font-size:12.5px;color:var(--t2);margin-top:2px">'+escH(e.time)+'</div><div style="font-size:11px;font-weight:700;color:'+c+';margin-top:3px">'+escH(e.cal||'')+'</div></div></div>';}).join('');
 }
 
 // ─── Add Event Modal ───
-function openEvModal(){document.getElementById('ev-modal').classList.add('open');document.getElementById('ev-title').value='';document.getElementById('ev-date').value=selectedDay;document.getElementById('ev-time').value='';setTimeout(()=>document.getElementById('ev-title').focus(),200)}
+function openEvModal(){document.getElementById('ev-modal').classList.add('open');document.getElementById('ev-title').value='';document.getElementById('ev-date').value=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(selectedDay).padStart(2,'0');document.getElementById('ev-time').value='';setTimeout(()=>document.getElementById('ev-title').focus(),200)}
 function closeEvModal(){document.getElementById('ev-modal').classList.remove('open')}
 function saveEvent(){
   const t=document.getElementById('ev-title').value.trim();
-  const d=parseInt(document.getElementById('ev-date').value);
+  const dateVal=document.getElementById('ev-date').value;
   const time=document.getElementById('ev-time').value.trim()||'Ganztaegig';
   const cal=document.getElementById('ev-cal').value;
   if(!t){alert('Bitte Titel eingeben');return}
-  if(!d||d<1||d>31){alert('Bitte gueltigen Tag eingeben (1-31)');return}
-  if(!calEvents[d])calEvents[d]=[];
-  calEvents[d].push({t,time,cal});
-  saveCalEvents();
-  buildCalendar();
-  selectDay(d);
-  closeEvModal();
-  // Offer to export to real calendar
-  if(confirm('Termin auch in Apple Kalender exportieren?')){
-    const h=time.match(/(\d+)/);
-    exportEventToCalendar(t,d,h?h[1]:'9','');
-  }
+  if(!dateVal){alert('Bitte Datum waehlen');return}
+  const[y,mo,da]=dateVal.split('-').map(Number);
+  const ev=getMonthEvents(y,mo-1);if(!ev[da])ev[da]=[];
+  ev[da].push({t,time,cal});saveMonthEvents(y,mo-1,ev);
+  calYear=y;calMonth=mo-1;selectedDay=da;buildCalendar();selectDay(da);closeEvModal();
+  if(gcalToken&&Date.now()<gcalTokenExpiry){createGcalEvent(t,dateVal,time);}
+  if(confirm('Auch als .ics exportieren?')){const h=time.match(/(\d+)/);exportEventToCalendar(t,da,h?h[1]:'9','');}
 }
 
 // ─── Permission System ───
@@ -1238,7 +1252,7 @@ function restorePerms(){
 
 // ─── Calendar .ics Export ───
 function exportEventToCalendar(title,date,timeStr,location){
-  const y=2026,m=3;
+  const y=calYear,m=calMonth+1;
   const startH=parseInt(timeStr)||9,startM=0;
   const dtStart=y+String(m).padStart(2,'0')+String(date).padStart(2,'0')+'T'+String(startH).padStart(2,'0')+String(startM).padStart(2,'0')+'00';
   const endH=startH+1;
@@ -1428,10 +1442,175 @@ function ttAct(a){
   el.value=t;updateTTStats();
 }
 
+// ─── Calendar Navigation ───
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}selectedDay=1;buildCalendar();}
+function calToday(){const t=new Date();calYear=t.getFullYear();calMonth=t.getMonth();selectedDay=t.getDate();buildCalendar();}
+
+// ─── Google Calendar ───
+function openGcalModal(){
+  document.getElementById('gcal-modal').classList.add('open');
+  document.getElementById('gcal-client-id').value=gcalClientId;
+  document.getElementById('gcal-msg').classList.remove('show');document.getElementById('gcal-msg').style.display='none';
+}
+function closeGcalModal(){document.getElementById('gcal-modal').classList.remove('open')}
+function connectGcal(){
+  const id=document.getElementById('gcal-client-id').value.trim();const msg=document.getElementById('gcal-msg');
+  if(!id){msg.textContent='Bitte Client ID eingeben.';msg.style.background='rgba(255,59,48,.08)';msg.style.color='var(--red)';msg.style.display='block';msg.classList.add('show');return;}
+  gcalClientId=id;localStorage.setItem('lucien-gcal-clientid',id);
+  try{
+    const client=google.accounts.oauth2.initTokenClient({
+      client_id:id,
+      scope:'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events',
+      callback:(resp)=>{
+        if(resp.error){msg.textContent='Fehler: '+resp.error;msg.style.background='rgba(255,59,48,.08)';msg.style.color='var(--red)';msg.style.display='block';msg.classList.add('show');return;}
+        gcalToken=resp.access_token;gcalTokenExpiry=Date.now()+(resp.expires_in*1000);
+        localStorage.setItem('lucien-gcal-token',gcalToken);localStorage.setItem('lucien-gcal-expiry',String(gcalTokenExpiry));
+        updateGcalStatus();closeGcalModal();showSyncToast('Google Kalender verbunden',true);
+        fetchGcalEvents();
+      }
+    });
+    client.requestAccessToken();
+  }catch(e){msg.textContent='Google SDK Fehler: '+e.message;msg.style.background='rgba(255,59,48,.08)';msg.style.color='var(--red)';msg.style.display='block';msg.classList.add('show');}
+}
+function updateGcalStatus(){
+  const st=document.getElementById('gcal-status');const sb=document.getElementById('cal-sync-btn');
+  if(gcalToken&&Date.now()<gcalTokenExpiry){
+    if(st){st.textContent='Verbunden';st.style.color='var(--green)';}
+    if(sb)sb.style.display='inline';
+  }else{
+    if(st){st.textContent='Nicht verbunden';st.style.color='var(--t4)';}
+    if(sb)sb.style.display='none';
+  }
+}
+function syncGcal(){if(gcalToken&&Date.now()<gcalTokenExpiry){fetchGcalEvents();}else if(gcalClientId){connectGcal();}else{openGcalModal();}}
+async function fetchGcalEvents(){
+  if(!gcalToken||Date.now()>=gcalTokenExpiry)return;
+  const now=new Date();const min=new Date(calYear,calMonth,1).toISOString();const max=new Date(calYear,calMonth+1,0,23,59,59).toISOString();
+  try{
+    const r=await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin='+encodeURIComponent(min)+'&timeMax='+encodeURIComponent(max)+'&singleEvents=true&orderBy=startTime&maxResults=200',{headers:{'Authorization':'Bearer '+gcalToken}});
+    if(!r.ok){if(r.status===401){gcalToken='';localStorage.removeItem('lucien-gcal-token');updateGcalStatus();}return;}
+    const d=await r.json();gcalEvents=d.items||[];buildCalendar();showSyncToast('Kalender synchronisiert',true);
+  }catch(e){showSyncToast('Sync fehlgeschlagen',false);}
+}
+async function createGcalEvent(title,dateStr,timeStr){
+  if(!gcalToken||Date.now()>=gcalTokenExpiry)return;
+  const body={summary:title};
+  if(timeStr&&timeStr!=='Ganztaegig'){
+    const h=parseInt(timeStr)||9;
+    body.start={dateTime:dateStr+'T'+String(h).padStart(2,'0')+':00:00',timeZone:'Europe/Berlin'};
+    body.end={dateTime:dateStr+'T'+String(h+1).padStart(2,'0')+':00:00',timeZone:'Europe/Berlin'};
+  }else{body.start={date:dateStr};body.end={date:dateStr};}
+  try{await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{method:'POST',headers:{'Authorization':'Bearer '+gcalToken,'Content-Type':'application/json'},body:JSON.stringify(body)});}catch(e){}
+}
+
+// ─── Weather ───
+async function fetchWeather(){
+  try{
+    const pos=await new Promise((res,rej)=>{if(navigator.geolocation)navigator.geolocation.getCurrentPosition(res,rej,{timeout:5000});else rej();});
+    const lat=pos.coords.latitude,lon=pos.coords.longitude;
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,weathercode,windspeed_10m&timezone=auto');
+    const d=await r.json();showWeather(d);
+  }catch(e){
+    // Fallback: Berlin coordinates
+    try{
+      const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=51.05&longitude=13.74&current=temperature_2m,weathercode,windspeed_10m&timezone=auto');
+      const d=await r.json();showWeather(d);
+    }catch(e2){}
+  }
+}
+function showWeather(d){
+  const c=d.current||d.current_weather||{};const temp=Math.round(c.temperature_2m??c.temperature??0);
+  const code=c.weathercode??c.weather_code??0;const wind=Math.round(c.windspeed_10m??c.windspeed??0);
+  const desc={0:'Klar',1:'Leicht bewölkt',2:'Teilweise bewölkt',3:'Bewölkt',45:'Nebel',48:'Nebel',51:'Leichter Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starkregen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Regenschauer',82:'Starke Schauer',95:'Gewitter'}[code]||'Bewölkt';
+  const wc=document.getElementById('weather-card');const wt=document.getElementById('w-temp');const wd=document.getElementById('w-desc');const ww=document.getElementById('w-wind');
+  if(wc){wc.style.display='block';}if(wt)wt.textContent=temp;if(wd)wd.textContent=desc;if(ww)ww.textContent='Wind: '+wind+' km/h';
+}
+
+// ─── User Name ───
+let userName=localStorage.getItem('lucien-username')||'';
+function updateHeroName(){
+  const hi=document.getElementById('hero-greeting');const nm=document.getElementById('hero-name');
+  const h=new Date().getHours();let greet;
+  if(h>=5&&h<12)greet='Guten Morgen';else if(h>=12&&h<18)greet='Guten Tag';else greet='Guten Abend';
+  if(hi)hi.textContent=greet;
+  if(nm)nm.textContent=userName||'Lucien';
+}
+function promptName(){
+  const n=prompt('Wie heisst du? (wird auf dem Homescreen angezeigt)');
+  if(n&&n.trim()){userName=n.trim();localStorage.setItem('lucien-username',userName);updateHeroName();}
+}
+
+// ─── Delete API Key ───
+function deleteApiKey(){
+  if(!savedKey){closeApiModal();return;}
+  savedKey='';localStorage.removeItem('lucien-apikey');
+  document.getElementById('api-input').value='';
+  const s=document.getElementById('api-status');s.textContent='Kein Key gesetzt';s.style.color='var(--t4)';
+  const msg=document.getElementById('api-msg');msg.textContent='API Key gelöscht.';msg.style.background='rgba(255,59,48,.08)';msg.style.color='var(--red)';msg.classList.add('show');
+  setTimeout(closeApiModal,1200);
+}
+
+// ─── Chat History ───
+let chatHistory=JSON.parse(localStorage.getItem('lucien-chats')||'[]');
+function renderChatList(){
+  const el=document.getElementById('chat-list');if(!el)return;
+  if(!chatHistory.length){
+    el.innerHTML='<div style="text-align:center;padding:30px 0;color:var(--t4);font-size:14px">Noch keine Chats</div>';return;
+  }
+  el.innerHTML=chatHistory.map((c,i)=>{
+    const colors={files:'linear-gradient(140deg,#007aff,#5856d6)',photos:'linear-gradient(140deg,#ff9500,#ff3b30)',notes:'linear-gradient(140deg,#ff2d55,#ff6482)',meeting:'linear-gradient(140deg,#af52de,#5856d6)',contacts:'linear-gradient(140deg,#32ade6,#007aff)',reminders:'linear-gradient(140deg,#ff3b30,#ff6961)',email:'linear-gradient(140deg,#34c759,#30d158)',clipboard:'linear-gradient(140deg,#32ade6,#007aff)',whatsapp:'linear-gradient(140deg,#34c759,#30d158)',sms:'linear-gradient(140deg,#ff9500,#ff6b00)'};
+    const bg=colors[c.type]||'linear-gradient(140deg,var(--blue),var(--indigo))';
+    const last=c.messages&&c.messages.length?c.messages[c.messages.length-1].content:'';
+    const preview=typeof last==='string'?last.substring(0,60):'...';
+    return '<div class="cl-item" style="position:relative" onclick="loadChat('+i+')"><div class="cl-av" style="background:'+bg+'"><svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div><div class="cl-txt"><div class="cl-name">'+escH(c.title||'Chat')+'</div><div class="cl-pre">'+escH(preview)+'</div></div><div class="cl-meta"><div class="cl-time">'+(c.time||'')+'</div><button style="background:none;border:none;color:var(--red);font-size:11px;font-weight:600;cursor:pointer;padding:4px 0;margin-top:4px" onclick="event.stopPropagation();deleteChat('+i+')">Löschen</button></div></div>';
+  }).join('');
+}
+function saveCurrentChat(){
+  if(!chatMessages.length||chatMessages.length<2)return;
+  const title=SHORTCUTS[currentChatType]?.title||'Chat';
+  const now=new Date();const timeStr=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  const days=['So','Mo','Di','Mi','Do','Fr','Sa'];const dayStr=days[now.getDay()];
+  chatHistory.unshift({type:currentChatType,title:title,messages:chatMessages.slice(),time:dayStr+' '+timeStr});
+  if(chatHistory.length>20)chatHistory=chatHistory.slice(0,20);
+  localStorage.setItem('lucien-chats',JSON.stringify(chatHistory));
+}
+function loadChat(i){
+  const c=chatHistory[i];if(!c)return;
+  currentChatType=c.type||'clipboard';chatMessages=c.messages.slice();chatSystem=SHORTCUTS[c.type]?.system||'';
+  document.getElementById('ct').textContent=c.title||'Chat';
+  document.querySelectorAll('#bn .ni').forEach((n,j)=>n.classList.toggle('on',j===1));
+  show('s1b');
+  const cm=document.getElementById('cm');
+  const now=new Date();cm.innerHTML='<div class="c-time">'+c.time+'</div>';
+  c.messages.forEach(m=>addBubble(m.role,typeof m.content==='string'?m.content:'[Medieninhalt]'));
+  document.getElementById('c-quick-wrap').innerHTML='';
+}
+function deleteChat(i){chatHistory.splice(i,1);localStorage.setItem('lucien-chats',JSON.stringify(chatHistory));renderChatList();}
+
+// ─── Update hero events count ───
+function updateHeroEvents(){
+  const today=new Date();const d=today.getDate();const y=today.getFullYear();const m=today.getMonth();
+  const local=getMonthEvents(y,m)[d]||[];const gcal=getGcalDayEvents(y,m)[d]||[];
+  const count=local.length+gcal.length;
+  const el=document.getElementById('hero-events');if(el)el.textContent=count+' Termin'+(count!==1?'e':'');
+}
+
 // ─── Init ───
 (function(){
   const sbar=document.getElementById('sbar');
   if(sbar)sbar.style.color='#fff';
+
+  // Calendar init
+  const today=new Date();
+  calYear=today.getFullYear();calMonth=today.getMonth();selectedDay=today.getDate();
+
+  // Migrate old calendar data format
+  const oldCal=localStorage.getItem('lucien-cal');
+  if(oldCal){try{const ev=JSON.parse(oldCal);if(typeof ev==='object'&&!Array.isArray(ev)){saveMonthEvents(2026,2,ev);}localStorage.removeItem('lucien-cal');}catch(e){}}
+
+  // Name prompt on first visit
+  if(!userName){setTimeout(()=>{promptName();},600);}
+  updateHeroName();
 
   // Restore API key display
   if(savedKey){
@@ -1447,6 +1626,16 @@ function ttAct(a){
 
   restorePerms();
   buildCalendar();
+  updateHeroEvents();
+  renderChatList();
+
+  // Google Calendar restore
+  updateGcalStatus();
+  if(gcalToken&&Date.now()<gcalTokenExpiry){setTimeout(fetchGcalEvents,500);}
+
+  // Weather
+  setTimeout(fetchWeather,300);
+
   if(window.innerWidth<=500)setTimeout(showInstallBanner,1500);
 })();
 </script>
